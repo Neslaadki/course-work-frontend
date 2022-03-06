@@ -3,21 +3,59 @@
 
 <template>
   <header>
-    <a href="/" ><input type="button" class="buttons " value="Main page"/></a>
-    <a href="/login" ><input type="button" class="buttons " value="Login"/></a>
-    <a href="/registration" ><input type="button" class="buttons " value="Registration"/></a>
-    <a href="/admin/admin-page" ><input type="button" class="buttons " value="Admin Page"/></a>
-    <a href="/logout-page" ><input type="button" class="buttons " value="User info"/></a>
+    <div class="main_head">
+      <div class="emp_name">
+        <h1>{{ msg }}</h1>
+        <div class="exit">
+          <router-link class="exit_button" to="/login">Выйти</router-link>
+        </div>
+      </div>
+    </div>
 
   </header>
 </template>
 
 <script>
-export default{
-
+export default {
+  name: 'my-header',
+  props: {
+    msg: String
+  }
 }
 </script>
 
 <style>
+h1 {
+  font-size: 40px;
+}
 
+.main_head {
+  background-color: rgba(139, 144, 148, 0.89);
+  color: black;
+  text-align: left;
+  vertical-align: middle;
+  width: available;
+  height: 100px;
+  position: relative;
+}
+.emp_name {
+  margin-left: 20px;
+  display: flex;
+  justify-content: space-between;
+  top: 50%;
+}
+
+.exit {
+  margin-top: 30px;
+  margin-right: 40px;
+}
+
+.exit_button {
+  padding: 10px 20px;
+  background-color: rgba(96, 99, 100, 0.94);
+  border-radius: 4px;
+  color: black;
+  font-size: 40px;
+  text-decoration: none;
+}
 </style>
