@@ -1,19 +1,21 @@
 <template>
   <div class="main-menu">
-    <div class="text-ex">
-      <div class="header-menu">
-        Добавление пробужденного в группу
+    <form>
+      <div class="text-ex">
+        <div class="header-menu">
+          Добавление пробужденного в группу
+        </div>
       </div>
-    </div>
-    <div class="input-row">
-      <div class="input-grid">
-        <input v-model="id_awakener_in_group" placeholder="Id пробужденного">
-        <input v-model="id_group_to_add" placeholder="Id группы">
+      <div class="input-row">
+        <div class="input-grid">
+          <input v-model="id_awakener_in_group" placeholder="Id пробужденного">
+          <input v-model="id_group_to_add" placeholder="Id группы">
+        </div>
       </div>
-    </div>
-    <div >
-      <button class="send-button">Добавить</button>
-    </div>
+      <div >
+        <button class="send-button" type="submit">Добавить</button>
+      </div>
+    </form>
   </div>
 </template>
 

@@ -1,17 +1,17 @@
 <template>
   <body class="text-center">
   <main class="form-signin">
-    <form>
+    <form @submit.prevent="login">
       <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <input v-model="username" class="form-control" id="floatingInput" placeholder="name@example.com">
         <label for="floatingInput">Логин</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Пароль</label>
+        <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label  for="floatingPassword">Пароль</label>
       </div>
-      <router-link class="w-100 btn btn-lg btn-primary"  to="/">Войти</router-link>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
     </form>
   </main>
   </body>
@@ -30,7 +30,21 @@ export default {
       showError: false
     };
   },
+  methods: {
+    login: function () {
+      const { username, password } = this
+
+      if (test_login.has(username)){
+        if (test_login.get(username) === password){
+          localStorage.setItem('isLogin', true)
+          this.$router.push('/')
+        }
+      }
+    }
+  }
 };
+var test_login = new Map([['cawaivannikov','cawa2001'],['antondzyba','12345'],['12345','12345']]);
+
 </script>
 
 <style scoped>

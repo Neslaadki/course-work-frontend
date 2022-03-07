@@ -5,7 +5,19 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+
+    meta: {
+      requiresAuth: true,
+    },
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('isLogin') === 'true'){
+        next();
+      }
+      else {
+        next({name:'login'})
+      }
+    }
   },
   {
     path: '/about',
@@ -18,12 +30,31 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/LoginView.vue')
+    component: () => import('../views/LoginView.vue'),
+    meta: {
+      requiresAuth: false,
+    },
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('isLogin') === 'true'){
+        localStorage.setItem('isLogin', false)
+      }
+    }
   },
   {
     path: '/admin',
     name: 'admin',
-    component: () => import('../views/AdminView.vue')
+    component: () => import('../views/AdminView.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('isLogin') === 'true'){
+        next();
+      }
+      else {
+        next({name:'login'})
+      }
+    }
   }
 ]
 
