@@ -1,7 +1,9 @@
 <template>
   <div class="main-menu">
     <div class="text-ex">
-      Выберите опцию в меню слева
+      <div class="header-menu">
+        Выберите опцию в меню слева
+      </div>
     </div>
   </div>
 </template>

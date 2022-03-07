@@ -1,7 +1,30 @@
 <template>
   <div class="main-menu">
     <div class="text-ex">
-      Пизда
+      <div class="header-menu">
+        Регистрация пробужденного в системе
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="input-grid">
+        <input v-model="name" placeholder="Имя">
+        <input v-model="rank" placeholder="Ранг">
+      </div>
+      <div class="input-grid">
+        <input v-model="surname" placeholder="Фамилия">
+        <input v-model="expirience" placeholder="Опыт">
+      </div>
+      <div class="input-grid">
+        <input v-model="date_of_birth" placeholder="Дата рождения">
+        <input v-model="guild" placeholder="Гильдия">
+      </div>
+      <div class="input-grid">
+        <input v-model="country" placeholder="Страна">
+        <input v-model="awaken_time" placeholder="Время пробуждения">
+      </div>
+    </div>
+    <div >
+      <button class="send-button">Отправить</button>
     </div>
   </div>
 </template>
@@ -13,17 +36,67 @@ export default {
 </script>
 
 <style>
+
+.send-button{
+  margin-top: 80px;
+  width: 30vw;
+}
+
+.input-row{
+  height: 40vh;
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+input{
+  font-size: 24px;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  padding: 10px;
+  border-radius: 15px;
+  color: aliceblue;
+  background-color: #38393b;
+  width: 20vw;
+  height: 5vh;
+}
+
+.input-grid{
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.header-menu{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+
 .main-menu{
-  vertical-align: middle;
   position: relative;
   margin: 10px;
   border-radius: 20px;
-  background-color: rgba(124, 124, 129, 0.94);
+  background-color: rgba(235, 235, 243, 0.94);
   width: 60vw;
   height: 80vh;
 }
 .text-ex{
-  margin-top: 35vh;
+
+  position: relative;
+  border-radius: 15px;
+  background-color: #4c4d4d;
+  margin-left: 3vw;
+  margin-right: 3vw;
+  margin-top: 3vh;
   font-size: 40px;
+  height: 10vh;
 }
 </style>
