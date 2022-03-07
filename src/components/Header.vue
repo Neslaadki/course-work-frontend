@@ -7,6 +7,7 @@
       <div class="emp_name">
         <h1>{{ msg }}</h1>
         <div class="exit">
+          <router-link class="exit_button" to="/admin">Админ консоль</router-link>
           <router-link class="exit_button" to="/login">Выйти</router-link>
         </div>
       </div>
@@ -51,6 +52,7 @@ h1 {
 }
 
 .exit_button {
+  margin: 10px;
   padding: 10px 20px;
   background-color: rgba(96, 99, 100, 0.94);
   border-radius: 4px;
