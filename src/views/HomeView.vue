@@ -2,9 +2,8 @@
     <div class="home">
       <my-header msg="Главный менеджер пробужденных"/>
     </div>
-    <div class="main_body">
+    <div>
       <list-scroll/>
-      <main-menu/>
     </div>
   <body>
 
