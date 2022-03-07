@@ -1,7 +1,7 @@
 <template>
   <body class="text-center">
   <main class="form-signin">
-    <form @submit.prevent="login">
+    <form @submit.prevent="postPost">
       <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
       <div class="form-floating">
         <input v-model="username" class="form-control" id="floatingInput" placeholder="name@example.com">
@@ -18,6 +18,9 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+
 export default {
   name: "Login",
   components: {},
@@ -40,6 +43,35 @@ export default {
           this.$router.push('/')
         }
       }
+    },
+    postPost : function () {
+      const userD = JSON.stringify({
+        username: this.username,
+        password: this.password
+      })
+
+      let config = {
+        headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          'Access-Control-Allow-Methods':"GET, PUT, POST, DELETE",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        }
+      }
+
+      axios.post(`http://localhost:8080/post`, {
+        body: userD                           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+      }, config)
+          .then(response => {
+            console.log(response)
+          })
+    },
+    getFunc : function () {
+      axios.get('http://localhost:8080/get').then(response => {
+        console.log(response)
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
     }
   }
 };
