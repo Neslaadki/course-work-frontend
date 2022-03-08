@@ -4,6 +4,7 @@
   <div class="main_body">
     <div class="list-block">
       <button v-on:click="chooseAddEmployee">Добавить сотрудника</button>
+      <button v-on:click="chooseAddHuman">Добавить человека и сотрудника</button>
       <button v-on:click="chooseAddAwakener">Добавить пробужденного</button>
       <button v-on:click="chooseDeleteAwakener">Удалить пробужденного</button>
       <button v-on:click="chooseInfoRifts">Список доступных разломов</button>
@@ -59,6 +60,16 @@ button {
 </style>
 
 <script>
+import { createApp } from "vue";
+import { useToast } from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+const options = {
+  // You can set your default options here
+};
+app.use(Toast, options);
+
 import MainMenu from "@/components/MainMenu";
 import InfoAboutAwakenerMenu from "@/components/InfoAboutAwakenerMenu";
 import InfoAwakenerMenu from "@/components/InfoAwakenerMenu";
@@ -69,10 +80,16 @@ import AddAwakenerInGroupMenu from "@/components/AddAwakenerInGroupMenu";
 import AddGroupMenu from "@/components/AddGroupMenu";
 import AddAwakenerMenu from "@/components/AddAwakenerMenu";
 import AddEmployeeMenu from "@/components/AddEmployeeMenu";
+import AddHumanAndEmployeeMenu from "@/components/AddHumanAndEmployeeMenu";
+
+
+
+
 
 export default {
   name: "ListScroll",
   components: {
+    AddHumanAndEmployeeMenu,
     MainMenu,
     InfoAboutAwakenerMenu,
     InfoAwakenerMenu,
@@ -89,7 +106,20 @@ export default {
       menuComponent:"MainMenu"
     }
   },
+  setup() {
+    // Get toast interface
+    const toast = useToast();
+
+
+    return { toast }
+  },
   methods: {
+    chooseAddHuman(){
+      // this.toast.info("Сосать", {
+      //   timeout: 2000
+      // });
+      this.menuComponent = AddHumanAndEmployeeMenu;
+    },
     chooseAddEmployee(){
       this.menuComponent = AddEmployeeMenu;
     },

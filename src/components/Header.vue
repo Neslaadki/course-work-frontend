@@ -7,7 +7,6 @@
       <div class="emp_name">
         <h1>{{ msg }}</h1>
         <div class="exit">
-          <router-link class="exit_button" to="/admin">Админ консоль</router-link>
           <router-link class="exit_button" to="/login">Выйти</router-link>
         </div>
       </div>

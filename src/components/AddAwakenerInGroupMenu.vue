@@ -12,7 +12,7 @@
           <input v-model="id_group_to_add" placeholder="Id группы">
         </div>
       </div>
-      <div >
+      <div>
         <button class="send-button" type="submit">Добавить</button>
       </div>
     </form>
@@ -21,18 +21,39 @@
 
 <script>
 export default {
-  name: "AddAwakenerInGroupMenu"
+  name: "AddAwakenerInGroupMenu",
+
+
+  postPost: function () {
+    let config = {
+      headers: {}
+    }
+
+
+    const userD = {
+      id: this.id_awakener_in_group,
+      group_id: this.id_group_to_add
+    }
+
+
+    axios.post(`http://localhost:8080/post`,
+        userD
+        , config)
+        .then(response => {
+          console.log(response)
+        })
+  }
 }
 </script>
 
 <style>
 
-.send-button{
+.send-button {
   margin-top: 80px;
   width: 30vw;
 }
 
-.input-row{
+.input-row {
   height: 40vh;
   margin: 30px;
   display: flex;
@@ -40,7 +61,7 @@ export default {
   justify-content: space-around;
 }
 
-input{
+input {
   font-size: 24px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -54,14 +75,18 @@ input{
   height: 5vh;
 }
 
-.input-grid{
+input::placeholder{
+  color: #dad8d8;
+}
+
+.input-grid {
   margin: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.header-menu{
+.header-menu {
   text-align: center;
   position: absolute;
   top: 50%;
@@ -70,7 +95,7 @@ input{
   transform: translate(-50%, -50%)
 }
 
-.main-menu{
+.main-menu {
   position: relative;
   margin: 10px;
   border-radius: 20px;
@@ -78,7 +103,8 @@ input{
   width: 60vw;
   height: 80vh;
 }
-.text-ex{
+
+.text-ex {
 
   position: relative;
   border-radius: 15px;

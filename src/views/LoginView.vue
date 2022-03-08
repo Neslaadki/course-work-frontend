@@ -9,7 +9,7 @@
       </div>
       <div class="form-floating">
         <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label  for="floatingPassword">Пароль</label>
+        <label for="floatingPassword">Пароль</label>
       </div>
       <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
     </form>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       form: {
-        username: "",
+        login: "",
         password: "",
       },
       showError: false
@@ -35,47 +35,47 @@ export default {
   },
   methods: {
     login: function () {
-      const { username, password } = this
+      const {username, password} = this
 
-      if (test_login.has(username)){
-        if (test_login.get(username) === password){
+      if (test_login.has(username)) {
+        if (test_login.get(username) === password) {
           localStorage.setItem('isLogin', true)
           this.$router.push('/')
         }
       }
     },
-    postPost : function () {
-      const userD = JSON.stringify({
-        username: this.username,
-        password: this.password
-      })
-
+    postPost: function () {
       let config = {
-        headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
-          'Access-Control-Allow-Methods':"GET, PUT, POST, DELETE",
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-        }
+        headers: {}
       }
 
-      axios.post(`http://localhost:8080/post`, {
-        body: userD                           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
-      }, config)
+      const userD = {
+        login: this.username,
+        password: this.password
+      }
+
+      console.log(userD)
+      axios.post(`http://localhost:8080/auth`,
+          userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+          , config)
           .then(response => {
-            console.log(response)
+            if (response.data.access === "true") {
+              if (response.data.role === "admin") {
+                localStorage.setItem('isLogin', true)
+                localStorage.setItem('isAdmin', true)
+                this.$router.push('/admin')
+              } else {
+                localStorage.setItem('isLogin', true)
+                this.$router.push('/')
+              }
+            } else {
+              window.alert("Был введен несуществующий логин или пароль")
+            }
           })
     },
-    getFunc : function () {
-      axios.get('http://localhost:8080/get').then(response => {
-        console.log(response)
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
-    }
   }
 };
-var test_login = new Map([['cawaivannikov','cawa2001'],['antondzyba','12345'],['12345','12345']]);
+var test_login = new Map([['cawaivannikov', 'cawa2001'], ['antondzyba', '12345'], ['12345', '12345']]);
 
 </script>
 
@@ -98,6 +98,7 @@ h1 {
     font-size: 3.5rem;
   }
 }
+
 html,
 body {
   height: 100%;
@@ -138,7 +139,7 @@ body {
   border-top-right-radius: 0;
 }
 
-button{
+button {
   border-color: black;
   background-color: dimgrey;
 }

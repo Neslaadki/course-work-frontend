@@ -2,25 +2,17 @@
   <div class="main-menu">
     <div class="text-ex">
       <div class="header-menu">
-        Регистрация пробужденного в системе
+        Сокращенная регистрация сотрудника в системе
       </div>
     </div>
     <div class="input-row">
       <div class="input-grid">
-        <input v-model="name" placeholder="Имя">
-        <input v-model="rank" placeholder="Ранг">
+        <input v-model="human_id" placeholder="ID Человека">
+        <input v-model="position_id" placeholder="ID Должности">
       </div>
       <div class="input-grid">
-        <input v-model="surname" placeholder="Фамилия">
-        <input v-model="expirience" placeholder="Опыт">
-      </div>
-      <div class="input-grid">
-        <input v-model="date_of_birth" placeholder="Дата рождения">
-        <input v-model="guild" placeholder="Гильдия">
-      </div>
-      <div class="input-grid">
-        <input v-model="country" placeholder="Страна">
-        <input v-model="awaken_time" placeholder="Время пробуждения">
+        <input v-model="experience" placeholder="Опыт работы">
+        <input v-model="access_level" placeholder="Уровень доступа">
       </div>
     </div>
     <div >
@@ -31,8 +23,43 @@
 
 <script>
 export default {
-  name: "AddAwakenerMenu"
+  name: "AddEmployeeMenu",
+  data() {
+    return {
+      form: {
+        human_id: "",
+        position_id: "",
+        experience: "",
+        access_level: "",
+      },
+      showError: false
+    };
+  },
+  methods: {
+    addEmployee: function () {
+      let config = {
+        headers: {}
+      }
+
+      const userD = {
+        post_human_id: this.human_id,
+        post_position_id: this.position_id,
+        post_experience: this.experience,
+        post_access_level: this.access_level,
+      }
+
+      console.log(userD)
+      axios.post(`http://localhost:8080/registration_simple`,
+          userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+          , config)
+          .then(response => {
+
+          })
+    }
+  }
 }
+
+
 </script>
 
 <style>
