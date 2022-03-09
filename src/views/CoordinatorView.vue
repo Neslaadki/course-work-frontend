@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <my-header msg="Админ консоль"/>
+    <my-header msg="Координатор"/>
   </div>
   <div>
     <list-scroll-admin/>
@@ -15,12 +15,12 @@
 import Header from '@/components/Header.vue'
 import ListScroll from "@/components/ListScroll";
 import MainMenu from "@/components/MainMenu";
-import ListScrollAdmin from "@/components/ListScrollAdmin";
+import ListScrollCoordinator from "@/components/ListScrollCoordinator";
 export default {
-  name: 'AdminView',
+  name: 'CoordinatorView',
   components: {
     'my-header':Header,
-    'list-scroll-admin':ListScrollAdmin,
+    'list-scroll-admin':ListScrollCoordinator,
     'main-menu':MainMenu
   }
 }

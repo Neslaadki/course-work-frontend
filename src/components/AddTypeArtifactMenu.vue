@@ -1,28 +1,16 @@
 <template>
-  <form  @submit.prevent="addAwakener">
+<form  @submit.prevent="addTypeArtifact">
     <div class="main-menu">
       <div class="text-ex">
         <div class="header-menu">
-          Регистрация пробужденного в системе
+          Добавление нового вида артефакта
         </div>
       </div>
       <div class="input-row">
         <div class="input-grid">
-          <input v-model="name" placeholder="Имя">
-          <input v-model="rank" placeholder="Ранг">
+          <input v-model="name" placeholder="Название вида">
         </div>
-        <div class="input-grid">
-          <input v-model="surname" placeholder="Фамилия">
-          <input v-model="experience" placeholder="Опыт">
-        </div>
-        <div class="input-grid">
-          <input type="date" v-model="birthday" placeholder="Дата рождения">
-          <input v-model="guild" placeholder="Гильдия">
-        </div>
-        <div class="input-grid">
-          <input v-model="country" placeholder="Страна">
-          <input type="date" v-model="awaken_time" placeholder="Время пробуждения">
-        </div>
+          <textarea  v-model="description" placeholder="Введите описание"/>
       </div>
       <div >
         <button type="submit" class="send-button">Отправить</button>
@@ -36,50 +24,31 @@
 import axios from "axios";
 
 export default {
-  name: "AddAwakenerMenu",
+  name: "AddTypeArtifact",
   data() {
     return {
       form: {
         name: "",
-        surname: "",
-        birthday: "",
-        country: "",
-        guild: "",
-        rank: "",
-        experience: "",
-        awaken_time: "",
+        description: "",
       },
       showError: false
     };
   },
   methods: {
-    addAwakener: function () {
+    addTypeArtifact: function () {
       let config = {
         headers: {}
       }
 
-      const date = new Date(this.birthday);
-      console.log(date);
-      console.log(this.birthday);
-      console.log(this.birthday.value);
-      const timestamp = date.getTime();
-
-      const awake_date = new Date(this.awaken_time);
-      const timestamp_awake = awake_date.getTime();
 
       const userD = {
-        firstName: this.name,
-        lastName: this.surname,
-        birthday: timestamp,
-        awakeTime: timestamp_awake,
-        countryId: this.country,
-        experience: this.experience,
-        rank: this.rank,
-        id_guild: this.guild
+        name: this.name,
+        description: this.description,
+        classTypeName: "ARTIFACT"
       }
 
       console.log(userD)
-      axios.post(`http://localhost:8080/addAwakener`,
+      axios.post(`http://localhost:8080/addArtifactOrMonsterType`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
@@ -90,8 +59,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
 /*.send-button{
   margin-top: 80px;
   width: 30vw;

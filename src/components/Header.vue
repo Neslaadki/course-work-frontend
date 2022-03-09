@@ -5,7 +5,9 @@
   <header>
     <div class="main_head">
       <div class="emp_name">
-        <h1>{{ msg }}</h1>
+        <div class="head-msg">
+          <h1>{{ msg }}</h1>
+        </div>
         <div class="exit">
           <router-link class="exit_button" to="/login">Выйти</router-link>
         </div>
@@ -24,39 +26,41 @@ export default {
 }
 </script>
 
-<style>
-h1 {
-  font-size: 40px;
-}
+<style scoped>
 
-.main_head {
-  background-color: rgba(139, 144, 148, 0.89);
-  color: black;
-  text-align: left;
-  vertical-align: middle;
-  width: available;
-  height: 100px;
-  position: relative;
+.head-msg{
+  margin-top: 2vh;
 }
-.emp_name {
-  margin-left: 20px;
-  display: flex;
-  justify-content: space-between;
-  top: 50%;
-}
-
 .exit {
-  margin-top: 30px;
+  margin-top: 1.5vh;
   margin-right: 40px;
 }
 
 .exit_button {
   margin: 10px;
   padding: 10px 20px;
-  background-color: rgba(96, 99, 100, 0.94);
+  background-color: rgba(56, 110, 155, 0.96);
   border-radius: 4px;
-  color: black;
+  color: rgba(13, 26, 46, 0.88);
   font-size: 40px;
   text-decoration: none;
+}
+
+.emp_name {
+
+  margin-left: 20px;
+  vertical-align: middle;
+  display: flex;
+  justify-content: space-between;
+  top: 50%;
+}
+.main_head {
+  background-color: rgba(192, 228, 253, 0.52);
+  color: rgba(13, 26, 46, 0.88);
+  text-align: left;
+  vertical-align: middle;
+  width: available;
+  height: 10vh;
+  position: relative;
 }
 </style>

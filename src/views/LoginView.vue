@@ -59,15 +59,30 @@ export default {
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
-            if (response.data.access === "true") {
+            if (response.data.result === "true") {
               if (response.data.role === "admin") {
-                localStorage.setItem('isLogin', true)
                 localStorage.setItem('isAdmin', true)
                 this.$router.push('/admin')
-              } else {
-                localStorage.setItem('isLogin', true)
-                this.$router.push('/')
+              } else if (response.data.role === "coordinator") {
+                localStorage.setItem('isCoor', true)
+                this.$router.push('/coordinator')
+              } else if (response.data.role === "manager_awakeners") {
+                localStorage.setItem('isManagerAwakeners', true)
+                this.$router.push('/manager_awakeners')
+              } else if (response.data.role === "manager_employee") {
+                localStorage.setItem('isManagerEmployee', true)
+                this.$router.push('/manager_employee')
+              } else if (response.data.role === "manager_rc") {
+                localStorage.setItem('isManagerRC', true)
+                this.$router.push('/manager_rc')
+              } else if (response.data.role === "registrator") {
+                localStorage.setItem('isRegistrator', true)
+                this.$router.push('/registrator')
               }
+              localStorage.setItem('country',response.data.country_id)
+              localStorage.setItem('role',response.data.role)
+              localStorage.setItem('role_id',response.data.role_id)
+              localStorage.setItem('access_lecel',response.data.access_level)
             } else {
               window.alert("Был введен несуществующий логин или пароль")
             }

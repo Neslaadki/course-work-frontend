@@ -1,30 +1,8 @@
-
-
 <template>
   <div class="main_body">
     <div class="list-block">
       <button v-on:click="chooseAddEmployee">Добавить сотрудника</button>
       <button v-on:click="chooseAddHuman">Добавить человека и сотрудника</button>
-      <button v-on:click="chooseAddAwakener">Добавить пробужденного</button>
-      <button v-on:click="chooseDeleteAwakener">Удалить пробужденного</button>
-      <button v-on:click="chooseInfoRifts">Список доступных разломов</button>
-      <button v-on:click="chooseInfoAboutAwakener">Информация о пробужденном</button>
-      <button v-on:click="chooseInfoAwakener">Список пробужденных</button>
-      <button v-on:click="chooseAddGroup">Создать группу</button>
-      <button v-on:click="chooseAddAwakenerInGroup">Добавить участников в группу</button>
-      <button v-on:click="chooseDeleteAwakenerFromGroup">Удалить участников из группы</button>
-
-      <button v-on:click="chooseAddArtifact">Добавить артефакт</button>
-      <button v-on:click="chooseAddTypeArtifact">Добавить вид артефакта</button>
-      <button v-on:click="chooseAddRift">Добавить разлом</button>
-      <button v-on:click="chooseUpdateRift">Обновить статус разлома</button>
-      <button v-on:click="chooseAddMonster">Добавить монстра</button>
-      <button v-on:click="chooseAddTypeMonster">Добавить вид монстра</button>
-      <button v-on:click="chooseCloseRift">Закрыть разлом</button>
-
-      <button v-on:click="chooseAddRecycling">Добавить Центр переработки</button>
-      <button v-on:click="chooseDeleteRecycling">Удалить Центр переработки</button>
-      <button v-on:click="chooseInfoRecycling">Вывести список центров переработки</button>
     </div>
      <component v-bind:is="menuComponent"/>
   </div>
@@ -105,7 +83,7 @@ import DeleteRecyclingMenu from "@/components/DeleteRecyclingMenu";
 import InfoRecyclingMenu from "@/components/InfoRecyclingMenu";
 
 export default {
-  name: "ListScroll",
+  name: "ListScrollManagerEmployee",
   components: {
     AddHumanAndEmployeeMenu,
     MainMenu,

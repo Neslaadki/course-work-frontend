@@ -1,31 +1,66 @@
 <template>
   <div class="main-menu">
-    <div class="text-ex">
-      <div class="header-menu">
-        Удаление пробужденного из группы
+    <form @submit.prevent="addAwakenerInGroup">
+      <div class="text-ex">
+        <div class="header-menu">
+          Удаление пробужденного из группы
+        </div>
       </div>
-    </div>
-    <div class="input-row">
-      <div class="input-grid">
-        <input v-model="id_awakener_in_group_delete" placeholder="Id пробужденного">
-        <input v-model="id_group_to_delete" placeholder="Id группы">
+      <div class="input-row">
+        <div class="input-grid">
+          <input v-model="id_awakener_in_group" placeholder="Id пробужденного">
+          <input v-model="id_group_to_add" placeholder="Id группы">
+        </div>
       </div>
-    </div>
-    <div >
-      <button class="send-button">Удалить</button>
-    </div>
+      <div>
+        <button class="send-button" type="submit">Удалить</button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
+
+import axios from 'axios'
+
 export default {
-  name: "DeleteAwakenerFromGroupMenu"
+  name: "DeleteAwakenerFromGroupMenu",
+  data() {
+    return {
+      form: {
+        id_awakener_in_group: "",
+        id_group_to_add: "",
+      },
+      showError: false
+    };
+  },
+  methods: {
+    addAwakenerInGroup: function () {
+      let config = {
+        headers: {}
+      }
+
+
+      const userD = {
+        human_id: this.id_awakener_in_group,
+        group_id: this.id_group_to_add
+      }
+
+
+      axios.post(`http://localhost:8080/removeAwakenerFromGroup`,
+          userD
+          , config)
+          .then(response => {
+            console.log(response)
+          })
+    }
+  }
 }
 </script>
 
 <style>
 
-.send-button{
+/*.send-button{
   margin-top: 80px;
   width: 30vw;
 }
@@ -86,5 +121,5 @@ input{
   margin-top: 3vh;
   font-size: 40px;
   height: 10vh;
-}
+}*/
 </style>

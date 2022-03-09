@@ -13,16 +13,27 @@ import "vue-toastification/dist/index.css";
       <button v-on:click="chooseAddGroup">Создать группу</button>
       <button v-on:click="chooseAddAwakenerInGroup">Добавить участников в группу</button>
       <button v-on:click="chooseDeleteAwakenerFromGroup">Удалить участников из группы</button>
+
+      <button v-on:click="chooseAddArtifact">Добавить артефакт</button>
+      <button v-on:click="chooseAddTypeArtifact">Добавить вид артефакта</button>
+      <button v-on:click="chooseAddRift">Добавить разлом</button>
+      <button v-on:click="chooseUpdateRift">Обновить статус разлома</button>
+      <button v-on:click="chooseAddMonster">Добавить монстра</button>
+      <button v-on:click="chooseAddTypeMonster">Добавить вид монстра</button>
+      <button v-on:click="chooseCloseRift">Закрыть разлом</button>
+
+      <button v-on:click="chooseAddRecycling">Добавить Центр переработки</button>
+      <button v-on:click="chooseDeleteRecycling">Удалить Центр переработки</button>
+      <button v-on:click="chooseInfoRecycling">Вывести список центров переработки</button>
     </div>
      <component v-bind:is="menuComponent"/>
   </div>
 </template>
 
 
-<style>
-
+<style scoped>
 .main_body{
-  background-color: rgba(206, 214, 220, 0.92);
+  background-color: rgba(122, 215, 244, 0.42);
   display: flex;
   justify-content: space-between;
   width: available;
@@ -32,7 +43,7 @@ import "vue-toastification/dist/index.css";
   display: grid;
   margin: 10px;
   border-radius: 5px;
-  background-color: rgba(124, 124, 129, 0.94);
+  background-color: rgba(30, 54, 75, 0.75);
   width: 35vw;
   height: 80vh;
   direction: rtl;
@@ -40,7 +51,8 @@ import "vue-toastification/dist/index.css";
 }
 
 button {
-  background-color: rgba(104, 104, 110, 0.94);
+  background-color: rgba(82, 123, 203, 0.9);;
+  color: #0e192d;
   margin: 15px;
   height: 60px;
   border-radius: 8px;
@@ -50,12 +62,12 @@ button {
 
 .list-block::-webkit-scrollbar {
   width: 13px;
-  background-color: #666a6c;
+  background-color: rgba(50, 83, 147, 0.89);
 }
 
 .list-block::-webkit-scrollbar-thumb {
   border-radius: 6px;
-  background-color: #4c4d4d;
+  background-color: rgba(81, 113, 171, 0.82);
 }
 </style>
 
@@ -69,10 +81,23 @@ import DeleteAwakenerMenu from "@/components/DeleteAwakenerMenu";
 import AddAwakenerInGroupMenu from "@/components/AddAwakenerInGroupMenu";
 import AddGroupMenu from "@/components/AddGroupMenu";
 import AddAwakenerMenu from "@/components/AddAwakenerMenu";
+import AddEmployeeMenu from "@/components/AddEmployeeMenu";
+import AddHumanAndEmployeeMenu from "@/components/AddHumanAndEmployeeMenu";
+import AddMonsterMenu from "@/components/AddMonsterMenu";
+import AddArtifactMenu from "@/components/AddArtifactMenu";
+import AddRiftMenu from "@/components/AddRiftMenu";
+import AddTypeMonsterMenu from "@/components/AddTypeMonsterMenu";
+import AddTypeArtifactMenu from "@/components/AddTypeArtifactMenu";
+import CloseRiftMenu from "@/components/CloseRiftMenu";
+import UpdateRiftMenu from "@/components/UpdateRiftMenu";
+import AddRecyclingMenu from "@/components/AddRecyclingMenu";
+import DeleteRecyclingMenu from "@/components/DeleteRecyclingMenu";
+import InfoRecyclingMenu from "@/components/InfoRecyclingMenu";
 
 export default {
   name: "ListScroll",
   components: {
+    AddHumanAndEmployeeMenu,
     MainMenu,
     InfoAboutAwakenerMenu,
     InfoAwakenerMenu,
@@ -81,7 +106,18 @@ export default {
     DeleteAwakenerMenu,
     AddAwakenerInGroupMenu,
     AddAwakenerMenu,
-    AddGroupMenu
+    AddGroupMenu,
+    AddEmployeeMenu,
+    AddMonsterMenu,
+    AddRiftMenu,
+    AddTypeMonsterMenu,
+    AddArtifactMenu,
+    AddTypeArtifactMenu,
+    CloseRiftMenu,
+    UpdateRiftMenu,
+    AddRecyclingMenu,
+    DeleteRecyclingMenu,
+    InfoRecyclingMenu
   },
   data(){
     return{
@@ -112,6 +148,36 @@ export default {
     },
     chooseAddGroup(){
       this.menuComponent = AddGroupMenu;
+    },
+    chooseAddMonster(){
+      this.menuComponent = AddMonsterMenu;
+    },
+    chooseAddArtifact(){
+      this.menuComponent = AddArtifactMenu;
+    },
+    chooseAddRift(){
+      this.menuComponent = AddRiftMenu;
+    },
+    chooseAddTypeMonster(){
+      this.menuComponent = AddTypeMonsterMenu;
+    },
+    chooseAddTypeArtifact(){
+      this.menuComponent = AddTypeArtifactMenu;
+    },
+    chooseUpdateRift(){
+      this.menuComponent = UpdateRiftMenu;
+    },
+    chooseCloseRift(){
+      this.menuComponent = CloseRiftMenu;
+    },
+    chooseAddRecycling(){
+      this.menuComponent = AddRecyclingMenu;
+    },
+    chooseDeleteRecycling(){
+      this.menuComponent = DeleteRecyclingMenu;
+    },
+    chooseInfoRecycling(){
+      this.menuComponent = InfoRecyclingMenu;
     }
   }
 }

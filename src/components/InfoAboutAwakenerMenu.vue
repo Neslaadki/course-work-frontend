@@ -1,90 +1,116 @@
 <template>
-  <div class="main-menu">
-    <div class="text-ex">
-      <div class="header-menu">
-        Информация о пробужденном
+  <form @submit.prevent="InfoAwakener">
+    <div class="main-menu">
+      <div class="text-ex">
+        <div class="header-menu">
+          Информация о пробужденном
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-grid">
+          <input v-model="id_awakener" placeholder="Id пробужденного">
+        </div>
+        <div class="scope-table">
+          <table>
+            <tr>
+              <th>Имя</th>
+              <th>Фамилия</th>
+              <th>Опыт</th>
+              <th>Страна</th>
+              <th>Гильдия</th>
+              <th>Ранг</th>
+              <th>День рождения</th>
+              <th>Время пробуждения</th>
+            </tr>
+            <tr>
+              <td>{{info.firstName}}</td>
+              <td>{{info.lastName}}</td>
+              <td>{{info.experience}}</td>
+              <td>{{info.countryId}}</td>
+              <td>{{info.id_guild}}</td>
+              <td>{{info.rank}}</td>
+              <td>{{birthDate}}</td>
+              <td>{{awakeDateFormat}}</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <div >
+        <button type="submit" class="send-button">Получить</button>
       </div>
     </div>
-    <div class="input-row">
-      <div class="input-grid">
-        <input v-model="id_awakener" placeholder="Id пробужденного">
-      </div>
-    </div>
-    <div >
-      <button class="send-button">Получить</button>
-    </div>
-  </div>
+  </form>
+
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "InfoAboutAwakenerMenu"
+  name: "InfoAboutAwakenerMenu",
+  data() {
+    return {
+      form: {
+        id_awakener: "",
+      },
+      showError: false,
+      info: "",
+      awakeDate: "",
+      awakeDateFormat: "",
+      birthDate: ""
+    };
+  },
+  methods: {
+    InfoAwakener: function () {
+      let config = {
+        headers: {}
+      }
+      axios.get(`http://localhost:8080/getAwakenerInfo/`+this.id_awakener
+          // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+          , config)
+          .then(response => {
+            console.log(response.data)
+            this.info = response.data
+            this.awakeDate = new Date(this.info.awakeTime)
+            this.awakeDateFormat = this.awakeDate.toLocaleDateString()
+            this.birthDate = new Date(this.info.birthday).toLocaleDateString()
+          })
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 
-.send-button {
-  margin-top: 80px;
-  width: 30vw;
+.scope-table{
+  margin-left: 2vw;
+  width:  49.2vw;
 }
-
-.input-row {
-  height: 40vh;
-  margin: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-input {
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+table {
+  width:  49.2vw;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 14px;
+  border-collapse: collapse;
   text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
 }
 
-.input-grid {
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+th {
+  background-color: rgba(82, 123, 203, 0.9);
+  color: rgba(13, 26, 46, 1);
+  padding: 10px 20px;
+
+}
+td {
+  background-color: rgba(115, 151, 220, 0.9);
+}
+th:first-child, td:first-child {
+  text-align: left;
 }
 
-.header-menu {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu {
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-
-.text-ex {
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
+td:first-child{
+  background-color: rgba(74, 110, 180, 0.9);
+  color: rgba(13, 26, 46, 1);
+  padding: 10px 20px;
 }
 </style>

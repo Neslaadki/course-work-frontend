@@ -1,5 +1,5 @@
 <template>
-  <form  @submit.prevent="addAwakener">
+<form  @submit.prevent="addAwakener">
     <div class="main-menu">
       <div class="text-ex">
         <div class="header-menu">

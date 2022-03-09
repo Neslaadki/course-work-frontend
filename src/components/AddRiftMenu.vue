@@ -1,5 +1,5 @@
 <template>
-  <form  @submit.prevent="addAwakener">
+  <form  @submit.prevent="addRift">
     <div class="main-menu">
       <div class="text-ex">
         <div class="header-menu">
@@ -8,20 +8,15 @@
       </div>
       <div class="input-row">
         <div class="input-grid">
-          <input v-model="name" placeholder="Имя">
+          <input v-model="id_coordinate" placeholder="Id координат">
+          <input v-model="id_country" placeholder="Id страны">
+        </div>
+        <div class="input-grid">
           <input v-model="rank" placeholder="Ранг">
+          <input v-model="access_level" placeholder="Уровень доступа">
         </div>
         <div class="input-grid">
-          <input v-model="surname" placeholder="Фамилия">
-          <input v-model="experience" placeholder="Опыт">
-        </div>
-        <div class="input-grid">
-          <input type="date" v-model="birthday" placeholder="Дата рождения">
-          <input v-model="guild" placeholder="Гильдия">
-        </div>
-        <div class="input-grid">
-          <input v-model="country" placeholder="Страна">
-          <input type="date" v-model="awaken_time" placeholder="Время пробуждения">
+          <input v-model="reward" placeholder="Награда">
         </div>
       </div>
       <div >
@@ -36,50 +31,35 @@
 import axios from "axios";
 
 export default {
-  name: "AddAwakenerMenu",
+  name: "AddRiftMenu",
   data() {
     return {
       form: {
-        name: "",
-        surname: "",
-        birthday: "",
-        country: "",
-        guild: "",
+        id_coordinate: "",
+        id_country: "",
         rank: "",
-        experience: "",
-        awaken_time: "",
+        access_level: "",
+        reward: ""
       },
       showError: false
     };
   },
   methods: {
-    addAwakener: function () {
+    addRift: function () {
       let config = {
         headers: {}
       }
 
-      const date = new Date(this.birthday);
-      console.log(date);
-      console.log(this.birthday);
-      console.log(this.birthday.value);
-      const timestamp = date.getTime();
-
-      const awake_date = new Date(this.awaken_time);
-      const timestamp_awake = awake_date.getTime();
-
       const userD = {
-        firstName: this.name,
-        lastName: this.surname,
-        birthday: timestamp,
-        awakeTime: timestamp_awake,
-        countryId: this.country,
-        experience: this.experience,
+        coordinateId: this.id_coordinate,
+        countryId: this.id_country,
         rank: this.rank,
-        id_guild: this.guild
+        accessLevel: this.access_level,
+        reward: this.reward
       }
 
       console.log(userD)
-      axios.post(`http://localhost:8080/addAwakener`,
+      axios.post(`http://localhost:8080/addRift`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

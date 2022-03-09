@@ -1,30 +1,61 @@
 <template>
-  <div class="main-menu">
-    <div class="text-ex">
-      <div class="header-menu">
-        Создание группы
+  <form  @submit.prevent="addGroup">
+    <div class="main-menu">
+      <div class="text-ex">
+        <div class="header-menu">
+          Создание группы
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-grid">
+          <input v-model="access_level" placeholder="Уровень доступа">
+        </div>
+      </div>
+      <div >
+        <button type="submit" class="send-button">Добавить</button>
       </div>
     </div>
-    <div class="input-row">
-      <div class="input-grid">
-        <input v-model="id_group" placeholder="Id группы">
-      </div>
-    </div>
-    <div >
-      <button class="send-button">Добавить</button>
-    </div>
-  </div>
+  </form>
+
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "AddGroupMenu"
+  name: "AddGroupMenu",
+  data() {
+    return {
+      form: {
+        access_level: "",
+      },
+      showError: false
+    };
+  },
+  methods: {
+    addGroup: function () {
+      let config = {
+        headers: {}
+      }
+      const userD = {
+        accessLevel: this.access_level
+      }
+
+      console.log(userD)
+      axios.post(`http://localhost:8080/createGroup`,
+          userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+          , config)
+          .then(response => {
+            console.log(response.data)
+          })
+    }
+  }
 }
 </script>
 
 <style>
 
-.send-button {
+/*.send-button {
   margin-top: 80px;
   width: 30vw;
 }
@@ -86,5 +117,5 @@ input {
   margin-top: 3vh;
   font-size: 40px;
   height: 10vh;
-}
+}*/
 </style>

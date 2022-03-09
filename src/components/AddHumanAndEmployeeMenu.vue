@@ -108,7 +108,7 @@ export default {
 
 <style>
 
-.send-button{
+/*.send-button{
   margin-top: 80px;
   width: 30vw;
 }
@@ -169,5 +169,5 @@ input{
   margin-top: 3vh;
   font-size: 40px;
   height: 10vh;
-}
+}*/
 </style>

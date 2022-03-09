@@ -1,58 +1,65 @@
 <template>
-  <form @submit.prevent="deleteAwakener">
-    <div class="main-menu">
-      <div class="text-ex">
-        <div class="header-menu">
-          Удаление пробужденного из системы
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-grid">
-          <input v-model="id_awakener" placeholder="Id пробужденного">
-        </div>
-      </div>
-      <div >
-        <button type="submit" class="send-button">Удалить</button>
+  <div class="main-menu">
+    <div class="text-ex">
+      <div class="header-menu">
+        Список центров переработки
       </div>
     </div>
-  </form>
-
+    <div class="input-row-scroll">
+      <table>
+        <tr>
+          <th>Координаты</th>
+          <th>Тип</th>
+          <th>Страна</th>
+          <th>Уровень доступа</th>
+        </tr>
+        <tr v-for="info in arrays">
+          <td>{{info.coordinateName}}</td>
+          <td>{{info.typeName}}</td>
+          <td>{{info.countryName}}</td>
+          <td>{{info.access_level}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-
 export default {
-  name: "DeleteAwakenerMenu",
+  name: "InfoRecyclingMenu",
   data() {
     return {
       form: {
         id_awakener: "",
       },
-      showError: false
+      showError: false,
+      arrays: ""
     };
   },
+  computed: {
+
+  },
   methods: {
-    deleteAwakener: function () {
+  },
+  mounted() {
       let config = {
         headers: {}
       }
-      console.log('HUI')
-      axios.delete(`http://localhost:8080/deleteAwakener/`+this.id_awakener
+      axios.get(`http://localhost:8080//getRcInfo/1/5`
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
+            this.arrays = response.data
           })
-      console.log('HUI2')
-    }
   }
 }
 </script>
 
 <style>
-
-/*.send-button {
+/*
+.send-button {
   margin-top: 80px;
   width: 30vw;
 }
