@@ -79,7 +79,7 @@ export default {
                 localStorage.setItem('isRegistrator', true)
                 this.$router.push('/registrator')
               }
-              localStorage.setItem('country',response.data.country_id)
+              localStorage.setItem('country_id',response.data.country_id)
               localStorage.setItem('role',response.data.role)
               localStorage.setItem('role_id',response.data.role_id)
               localStorage.setItem('access_lecel',response.data.access_level)

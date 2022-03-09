@@ -37,16 +37,22 @@
 </template>
 
 <script>
+
+
+
+const options = {
+};
+
 import { createApp } from "vue";
 import { useToast } from "vue-toastification";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 const app = createApp();
-const options = {
-};
 app.use(Toast, options);
 
 import axios from 'axios'
+
+
 
 export default {
   name: "AddHumanAndEmployeeMenu",
@@ -98,6 +104,18 @@ export default {
           , config)
           .then(response => {
             console.log(response.data)
+            // Get toast interface
+            const toast = useToast();
+            // Use it!
+            if(response.data.result == 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            }else{
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
           })
     }
   }

@@ -122,13 +122,13 @@ const routes = [
         meta: {
             requiresAuth: true,
         },
-        beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('isAdmin') === 'true') {
-                next();
-            } else {
-                next({name: 'login'})
-            }
-        }
+        // beforeEnter: (to, from, next) => {
+        //     if (localStorage.getItem('isAdmin') === 'true') {
+        //         next();
+        //     } else {
+        //         next({name: 'login'})
+        //     }
+        // }
     }
 ]
 

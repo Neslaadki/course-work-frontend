@@ -25,6 +25,9 @@
       <button v-on:click="chooseAddRecycling">Добавить Центр переработки</button>
       <button v-on:click="chooseDeleteRecycling">Удалить Центр переработки</button>
       <button v-on:click="chooseInfoRecycling">Вывести список центров переработки</button>
+
+<!--      <button v-on:click="chooseInfoEmployee">Вывести список сотрудников</button>
+      <button v-on:click="chooseDeleteEmployee">Удалить сотрудника</button>-->
     </div>
      <component v-bind:is="menuComponent"/>
   </div>
@@ -103,6 +106,8 @@ import UpdateRiftMenu from "@/components/UpdateRiftMenu";
 import AddRecyclingMenu from "@/components/AddRecyclingMenu";
 import DeleteRecyclingMenu from "@/components/DeleteRecyclingMenu";
 import InfoRecyclingMenu from "@/components/InfoRecyclingMenu";
+import InfoEmployeeMenu from "@/components/InfoEmployeeMenu";
+import DeleteEmployeeMenu from "@/components/DeleteEmployeeMenu";
 
 export default {
   name: "ListScroll",
@@ -127,7 +132,9 @@ export default {
     UpdateRiftMenu,
     AddRecyclingMenu,
     DeleteRecyclingMenu,
-    InfoRecyclingMenu
+    InfoRecyclingMenu,
+    InfoEmployeeMenu,
+    DeleteEmployeeMenu
   },
   data(){
     return{
@@ -204,6 +211,12 @@ export default {
     },
     chooseInfoRecycling(){
       this.menuComponent = InfoRecyclingMenu;
+    },
+    chooseInfoEmployee(){
+      this.menuComponent = InfoEmployeeMenu;
+    },
+    chooseDeleteEmployee(){
+      this.menuComponent = DeleteEmployeeMenu;
     }
   }
 }

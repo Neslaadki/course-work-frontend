@@ -52,16 +52,16 @@ export default {
     let config = {
       headers: {}
     }
-    axios.get(`http://localhost:8080/getAwakenersInfo/` + localStorage.getItem("country_id")
+    axios.get(`http://localhost:8080/getEmployee/` + localStorage.getItem("country_id")
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
         , config)
         .then(response => {
           console.log(response.data)
-          this.arrays = response.data
-          this.arrays.forEach(array => {
-            array.awakeTime = new Date(array.awakeTime).toLocaleDateString()
-            array.birthday = new Date(array.birthday).toLocaleDateString()
-          })
+          // this.arrays = response.data
+          // this.arrays.forEach(array => {
+          //   array.awakeTime = new Date(array.awakeTime).toLocaleDateString()
+          //   array.birthday = new Date(array.birthday).toLocaleDateString()
+          // })
         }).catch(err => {
       console.log(err)
       console.log("Твоя мама шлю")

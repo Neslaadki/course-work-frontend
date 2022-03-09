@@ -75,7 +75,9 @@ export default {
             this.awakeDate = new Date(this.info.awakeTime)
             this.awakeDateFormat = this.awakeDate.toLocaleDateString()
             this.birthDate = new Date(this.info.birthday).toLocaleDateString()
-          })
+          }).catch(err => {
+        console.log("Пошел нахуй")
+      })
     }
   }
 }

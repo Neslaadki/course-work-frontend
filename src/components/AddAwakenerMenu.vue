@@ -34,7 +34,13 @@
 
 <script>
 import axios from "axios";
-
+const options = {};
+import { createApp } from "vue";
+import { useToast } from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
 export default {
   name: "AddAwakenerMenu",
   data() {
@@ -84,6 +90,19 @@ export default {
           , config)
           .then(response => {
             console.log(response.data)
+
+            const toast = useToast();
+            // Use it!
+            if(response.data.result == 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            }else{
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
+
           })
     }
   }
