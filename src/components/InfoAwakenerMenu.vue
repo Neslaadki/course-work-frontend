@@ -52,7 +52,7 @@ export default {
     let config = {
       headers: {}
     }
-    axios.get(`http://localhost:8080/getAwakenersInfo/` + localStorage.getItem("country_id")
+    axios.get(`http://localhost:38431/getAwakenersInfo/` + localStorage.getItem("country_id")
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
         , config)
         .then(response => {

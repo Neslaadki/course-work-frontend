@@ -51,7 +51,7 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:8080/addArtifact`,
+      axios.post(`http://localhost:38431/addArtifact`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

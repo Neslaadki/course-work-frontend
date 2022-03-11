@@ -59,7 +59,7 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:8080/addRift`,
+      axios.post(`http://localhost:38431/addRift`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

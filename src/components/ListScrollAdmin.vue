@@ -7,7 +7,7 @@
       <button v-on:click="chooseAddHuman">Добавить человека и сотрудника</button>
       <button v-on:click="chooseAddAwakener">Добавить пробужденного</button>
       <button v-on:click="chooseDeleteAwakener">Удалить пробужденного</button>
-      <button v-on:click="chooseInfoRifts">Список доступных разломов</button>
+<!--      <button v-on:click="chooseInfoRifts">Список доступных разломов</button>-->
       <button v-on:click="chooseInfoAboutAwakener">Информация о пробужденном</button>
       <button v-on:click="chooseInfoAwakener">Список пробужденных</button>
       <button v-on:click="chooseAddGroup">Создать группу</button>

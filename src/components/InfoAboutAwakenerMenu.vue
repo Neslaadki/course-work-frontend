@@ -66,7 +66,7 @@ export default {
       let config = {
         headers: {}
       }
-      axios.get(`http://localhost:8080/getAwakenerInfo/`+this.id_awakener
+      axios.get(`http://localhost:38431/getAwakenerInfo/`+this.id_awakener
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

@@ -99,7 +99,7 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:8080/registration`,
+      axios.post(`http://localhost:38431/registration`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

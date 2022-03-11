@@ -38,7 +38,7 @@ export default {
         headers: {}
       }
       console.log('HUI')
-      axios.delete(`http://localhost:8080/deleteAwakener/`+this.id_awakener
+      axios.delete(`http://localhost:38431/deleteAwakener/`+this.id_awakener
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

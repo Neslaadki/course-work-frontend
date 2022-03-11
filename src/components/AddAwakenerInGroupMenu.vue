@@ -22,6 +22,13 @@
 <script>
 
 import axios from 'axios'
+const options = {};
+import { createApp } from "vue";
+import { useToast } from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
 
 export default {
   name: "AddAwakenerInGroupMenu",
@@ -47,11 +54,23 @@ export default {
       }
 
 
-      axios.post(`http://localhost:8080/addAwakenerToGroup`,
+      axios.post(`http://localhost:38431/addAwakenerToGroup`,
           userD
           , config)
           .then(response => {
             console.log(response)
+            const toast = useToast();
+            // Use it!
+            if(response.data.result === 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            }else{
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
+
           })
     }
   }

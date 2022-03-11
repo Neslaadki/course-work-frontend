@@ -21,6 +21,14 @@
 
 <script>
 import axios from "axios";
+const options = {};
+import { createApp } from "vue";
+import { useToast } from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
+
 
 export default {
   name: "AddGroupMenu",
@@ -42,11 +50,22 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:8080/createGroup`,
+      axios.post(`http://localhost:38431/createGroup`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
+            const toast = useToast();
+            // Use it!
+            if(response.data.result == 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            }else{
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
           })
     }
   }

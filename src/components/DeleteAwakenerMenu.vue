@@ -11,7 +11,7 @@
           <input v-model="id_awakener" placeholder="Id пробужденного">
         </div>
       </div>
-      <div >
+      <div>
         <button type="submit" class="send-button">Удалить</button>
       </div>
     </div>
@@ -21,7 +21,13 @@
 
 <script>
 import axios from "axios";
-
+const options = {};
+import { createApp } from "vue";
+import { useToast } from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
 export default {
   name: "DeleteAwakenerMenu",
   data() {
@@ -38,11 +44,22 @@ export default {
         headers: {}
       }
       console.log('HUI')
-      axios.delete(`http://localhost:8080/deleteAwakener/`+this.id_awakener
+      axios.delete(`http://localhost:38431/deleteAwakener/`+this.id_awakener
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
+
+            const toast = useToast();
             console.log(response.data)
+            if(response.data.result == 'true') {
+              toast.success("Успешно удалено", {
+                timeout: 2000
+              });
+            }else{
+              toast.error("Ошибка удаления", {
+                timeout: 2000
+              });
+            }
           })
       console.log('HUI2')
     }

@@ -47,7 +47,7 @@ export default {
       }
 
 
-      axios.post(`http://localhost:8080/removeAwakenerFromGroup`,
+      axios.post(`http://localhost:38431/removeAwakenerFromGroup`,
           userD
           , config)
           .then(response => {

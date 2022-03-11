@@ -46,7 +46,7 @@ export default {
       let config = {
         headers: {}
       }
-      axios.get(`http://localhost:8080//getRcInfo/1/5`
+      axios.get(`http://localhost:38431/getRcInfo/1/5`
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
