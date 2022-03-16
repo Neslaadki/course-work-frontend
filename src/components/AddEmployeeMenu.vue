@@ -92,7 +92,6 @@ export default {
           console.log(response.data)
           this.list_positions = response.data
         }).catch(err => {
-      console.log("Пошел нахуй")
     })
     axios.get(`http://localhost:` + this.myPort + `/getHumansInfo/` + localStorage.getItem("country_id")
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
@@ -104,7 +103,7 @@ export default {
             human.firstName = human.id + ': ' + human.firstName + ' ' + human.lastName
           })
         }).catch(err => {
-      console.log("Пошел нахуй")
+
     })
   },
   methods: {

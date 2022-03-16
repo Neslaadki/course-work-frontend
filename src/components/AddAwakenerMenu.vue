@@ -116,7 +116,6 @@ export default {
           console.log(response.data)
           this.list_positions = response.data
         }).catch(err => {
-      console.log("Пошел нахуй")
     })
     axios.get(`http://localhost:` + this.myPort + `/getCountryMap`
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
@@ -125,7 +124,6 @@ export default {
           console.log(response.data)
           this.countries = response.data
         }).catch(err => {
-      console.log("Пошел нахуй")
     })
   },
   methods: {

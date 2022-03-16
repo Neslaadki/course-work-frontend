@@ -58,7 +58,6 @@ export default {
           })
         }).catch(err => {
       console.log(err)
-      console.log("Твоя мама шлю")
       return Promise.reject(err)
     })
   }

@@ -39,14 +39,12 @@ export default {
       let config = {
         headers: {}
       }
-      console.log('HUI')
       axios.delete(`http://localhost:` + this.myPort + `/deleteAwakener/` + this.id_awakener
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
           })
-      console.log('HUI2')
     }
   }
 }

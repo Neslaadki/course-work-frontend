@@ -75,7 +75,6 @@ export default {
           console.log(response.data)
           this.countries = response.data
         }).catch(err => {
-      console.log("Пошел нахуй")
     })
   },
   methods: {

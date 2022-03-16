@@ -77,7 +77,6 @@ export default {
           console.log(response.data)
           this.countries = response.data
         }).catch(err => {
-      console.log("Пошел нахуй")
     })
     axios.get(`http://localhost:` + this.myPort + `/getTypesMap/RECYCLING`
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
