@@ -3,31 +3,39 @@
 <template>
   <div class="main_body">
     <div class="list-block">
-      <button v-on:click="chooseAddEmployee">Добавить сотрудника</button>
-      <button v-on:click="chooseAddHuman">Добавить человека и сотрудника</button>
-      <button v-on:click="chooseAddAwakener">Добавить пробужденного</button>
-      <button v-on:click="chooseDeleteAwakener">Удалить пробужденного</button>
-<!--      <button v-on:click="chooseInfoRifts">Список доступных разломов</button>-->
-      <button v-on:click="chooseInfoAboutAwakener">Информация о пробужденном</button>
-      <button v-on:click="chooseInfoAwakener">Список пробужденных</button>
-      <button v-on:click="chooseAddGroup">Создать группу</button>
-      <button v-on:click="chooseAddAwakenerInGroup">Добавить участников в группу</button>
-      <button v-on:click="chooseDeleteAwakenerFromGroup">Удалить участников из группы</button>
+      <Button  v-on:click="chooseInfoHuman">Список людей</Button>
+      <Button v-on:click="chooseAddEmployee">Добавить сотрудника</Button>
+      <Button v-on:click="chooseAddHuman">Добавить человека и сотрудника</Button>
+      <Button v-on:click="chooseAddAwakener">Добавить пробужденного</Button>
+<!--      <Button v-on:click="chooseDeleteAwakener">Удалить пробужденного</Button>-->
+<!--      <Button v-on:click="chooseInfoRifts">Список доступных разломов</Button>-->
+      <Button v-on:click="chooseInfoAboutAwakener">Информация о пробужденном</Button>
+      <Button v-on:click="chooseInfoAwakener">Список пробужденных</Button>
+      <Button v-on:click="chooseAddGroup">Создать группу</Button>
+      <Button v-on:click="chooseAddAwakenerInGroup">Добавить участников в группу</Button>
+      <Button v-on:click="chooseDeleteAwakenerFromGroup">Удалить участников из группы</Button>
 
-      <button v-on:click="chooseAddArtifact">Добавить артефакт</button>
-      <button v-on:click="chooseAddTypeArtifact">Добавить вид артефакта</button>
-      <button v-on:click="chooseAddRift">Добавить разлом</button>
-      <button v-on:click="chooseUpdateRift">Обновить статус разлома</button>
-      <button v-on:click="chooseAddMonster">Добавить монстра</button>
-      <button v-on:click="chooseAddTypeMonster">Добавить вид монстра</button>
-      <button v-on:click="chooseCloseRift">Закрыть разлом</button>
+      <Button v-on:click="chooseAddArtifact">Добавить артефакт</Button>
+      <Button v-on:click="chooseAddTypeArtifact">Добавить вид артефакта</Button>
+      <Button v-on:click="chooseAddRift">Добавить разлом</Button>
+      <Button v-on:click="chooseUpdateRift">Обновить статус разлома</Button>
+      <Button v-on:click="chooseInfoStatus">Посмотреть состояние разлома</Button>
+      <Button v-on:click="chooseAddMonster">Добавить монстра</Button>
+      <Button v-on:click="chooseAddTypeMonster">Добавить вид монстра</Button>
+      <Button v-on:click="chooseAddMaterial">Добавить материал</Button>
+<!--      <Button v-on:click="chooseCloseRift">Закрыть разлом</Button>-->
 
-      <button v-on:click="chooseAddRecycling">Добавить Центр переработки</button>
-      <button v-on:click="chooseDeleteRecycling">Удалить Центр переработки</button>
-      <button v-on:click="chooseInfoRecycling">Вывести список центров переработки</button>
+      <Button v-on:click="chooseAddRecycling">Добавить Центр переработки</Button>
+<!--      <Button v-on:click="chooseDeleteRecycling">Удалить Центр переработки</Button>-->
+      <Button v-on:click="chooseInfoRecycling">Вывести список центров переработки</Button>
+      <Button v-on:click="chooseInfoMaterial">Список материалов с монстра</Button>
 
-<!--      <button v-on:click="chooseInfoEmployee">Вывести список сотрудников</button>
-      <button v-on:click="chooseDeleteEmployee">Удалить сотрудника</button>-->
+      <Button v-on:click="chooseInfoMonster">Список монстров из разлома</Button>
+      <Button v-on:click="chooseInfoArtifact">Список артефактов из разлома</Button>
+      <Button v-on:click="chooseInfoRiftByGroup">Список разломов группы</Button>
+
+<!--      <Button v-on:click="chooseInfoEmployee">Вывести список сотрудников</Button>
+      <Button v-on:click="chooseDeleteEmployee">Удалить сотрудника</Button>-->
     </div>
      <component v-bind:is="menuComponent"/>
   </div>
@@ -35,6 +43,8 @@
 
 
 <style scoped>
+
+
 .main_body{
   background-color: rgba(122, 215, 244, 0.42);
   display: flex;
@@ -54,8 +64,9 @@
 }
 
 button {
-  background-color: rgba(82, 123, 203, 0.9);;
-  color: #0e192d;
+  text-align: center;
+  background-color: rgba(56, 56, 63, 0.59);;
+  color: #ffffff;
   margin: 15px;
   height: 60px;
   border-radius: 8px;
@@ -108,6 +119,13 @@ import DeleteRecyclingMenu from "@/components/DeleteRecyclingMenu";
 import InfoRecyclingMenu from "@/components/InfoRecyclingMenu";
 import InfoEmployeeMenu from "@/components/InfoEmployeeMenu";
 import DeleteEmployeeMenu from "@/components/DeleteEmployeeMenu";
+import InfoHumanMenu from "@/components/InfoHumanMenu";
+import InfoMaterialsMenu from "@/components/InfoMaterialsMenu";
+import InfoStatusMenu from "@/components/InfoStatusMenu";
+import InfoMonsterMenu from "@/components/InfoMonsterMenu";
+import InfoArtifactMenu from "@/components/InfoArtifactMenu";
+import InfoRiftByGroupMenu from "@/components/InfoRiftByGroupMenu";
+import AddMaterialMenu from "@/components/AddMaterialMenu"
 
 export default {
   name: "ListScroll",
@@ -134,7 +152,14 @@ export default {
     DeleteRecyclingMenu,
     InfoRecyclingMenu,
     InfoEmployeeMenu,
-    DeleteEmployeeMenu
+    DeleteEmployeeMenu,
+    InfoHumanMenu,
+    InfoMaterialsMenu,
+    InfoStatusMenu,
+    InfoMonsterMenu,
+    InfoArtifactMenu,
+    InfoRiftByGroupMenu,
+    AddMaterialMenu
   },
   data(){
     return{
@@ -212,11 +237,29 @@ export default {
     chooseInfoRecycling(){
       this.menuComponent = InfoRecyclingMenu;
     },
-    chooseInfoEmployee(){
-      this.menuComponent = InfoEmployeeMenu;
+    chooseInfoHuman(){
+      this.menuComponent = InfoHumanMenu;
     },
     chooseDeleteEmployee(){
       this.menuComponent = DeleteEmployeeMenu;
+    },
+    chooseInfoMaterial(){
+      this.menuComponent = InfoMaterialsMenu;
+    },
+    chooseInfoStatus(){
+      this.menuComponent = InfoStatusMenu;
+    },
+    chooseInfoMonster(){
+      this.menuComponent = InfoMonsterMenu
+    },
+    chooseInfoArtifact(){
+      this.menuComponent = InfoArtifactMenu
+    },
+    chooseInfoRiftByGroup(){
+      this.menuComponent = InfoRiftByGroupMenu
+    },
+    chooseAddMaterial(){
+      this.menuComponent = AddMaterialMenu
     }
   }
 }

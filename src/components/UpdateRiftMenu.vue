@@ -1,157 +1,154 @@
 <template>
-<form  @submit.prevent="addAwakener">
-    <div class="main-menu">
-      <div class="text-ex">
-        <div class="header-menu">
-          Регистрация пробужденного в системе
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-grid">
-          <input v-model="name" placeholder="Имя">
-          <input v-model="rank" placeholder="Ранг">
-        </div>
-        <div class="input-grid">
-          <input v-model="surname" placeholder="Фамилия">
-          <input v-model="experience" placeholder="Опыт">
-        </div>
-        <div class="input-grid">
-          <input type="date" v-model="birthday" placeholder="Дата рождения">
-          <input v-model="guild" placeholder="Гильдия">
-        </div>
-        <div class="input-grid">
-          <input v-model="country" placeholder="Страна">
-          <input type="date" v-model="awaken_time" placeholder="Время пробуждения">
-        </div>
-      </div>
-      <div >
-        <button type="submit" class="send-button">Отправить</button>
+
+  <div class="main-menu">
+    <div class="text-ex">
+      <div class="header-menu">
+        Обновление состояния разлома
       </div>
     </div>
-  </form>
+    <form @submit.prevent="addRift">
+      <div class="input-row">
+        <span class="p-float-label">
+                <Dropdown class="my-drop" id="rift" v-model="rift" :options="rifts"
+                          option-value="id"
+                          optionLabel="coordinateX"
+                          :filter="true" filterPlaceholder="Введите данные"></Dropdown>
+                <label for="rift">Выберите разлом</label>
+        </span>
 
+        <span class="p-float-label">
+                <Dropdown class="my-drop" id="group_id" v-model="id_group_to_add" :options="groups" option-value="id"
+                          optionLabel="name"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="group_id">Выберите группу</label>
+          </span>
+        <div style="display: flex; justify-content: center;">
+          <div style="background-color: white; width: 30vw; height: 9vh; border-radius: 9px">
+            <label style="color:#4c4d4d; font-size: 20px" for="selectButton">Выберите состояние разлома</label>
+            <SelectButton id="selectButton" v-model="selectCondition" :options="booleanCheck" optionLabel="name" option-value="result" />
+          </div>
+        </div>
+        <span class="p-float-label">
+          <Calendar class="my-drop" id="awakeTime" v-model="openTime" dateFormat="dd-mm-yy"/>
+	        <label for="awakeTime">Выберите дату открытия разлома</label>
+        </span>
+      </div>
+      <div>
+
+        <Button class="send-button" type="submit">Отправить</Button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
+const options = {};
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
 import axios from "axios";
 
 export default {
-  name: "AddAwakenerMenu",
+  name: "AddRiftMenu",
   data() {
     return {
-      form: {
-        name: "",
-        surname: "",
-        birthday: "",
-        country: "",
-        guild: "",
-        rank: "",
-        experience: "",
-        awaken_time: "",
-      },
-      showError: false
+      booleanCheck: [{name: 'Открыт', result: 'false'},{name: 'Закрыт', result: 'true'}],
+      id_group_to_add: null,
+      countries: null,
+      x: null,
+      y: null,
+      reward: null,
+      country: null,
+      access_level: null,
+      rank: null,
+      showError: false,
+      rifts: null,
+      rift: null,
+      groups: null,
+      group_id: null,
+      selectCondition: null,
+      openTime: null
     };
   },
+  mounted() {
+    axios.get(`http://localhost:` + this.myPort + `/getRiftMap`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+        )
+        .then(response => {
+          console.log(response.data)
+          this.rifts = response.data
+          this.rifts.forEach(rift => {
+            rift.coordinateX = 'Id: ' + rift.id + ' Coordinates: {' + rift.coordinateX + ', ' + rift.coordinateY + '}'
+          })
+        }).catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
+    axios.get(`http://localhost:` + this.myPort + `/getGroupsMap`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+    )
+        .then(response => {
+          console.log(response.data)
+          this.groups = response.data
+        }).catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
+  },
+
   methods: {
-    addAwakener: function () {
+    addRift: function () {
       let config = {
         headers: {}
       }
 
-      const date = new Date(this.birthday);
-      console.log(date);
-      console.log(this.birthday);
-      console.log(this.birthday.value);
-      const timestamp = date.getTime();
-
-      const awake_date = new Date(this.awaken_time);
-      const timestamp_awake = awake_date.getTime();
-
       const userD = {
-        firstName: this.name,
-        lastName: this.surname,
-        birthday: timestamp,
-        awakeTime: timestamp_awake,
-        countryId: this.country,
-        experience: this.experience,
-        rank: this.rank,
-        id_guild: this.guild
-      }
+        riftId: this.rift,
+        groupId:this.id_group_to_add,
+        firstCondition: this.selectCondition,
+        openTime: this.openTime,
+        result: this.selectCondition
 
+      }
+      if(userD.result === 'true'){
+        userD.result = 'false'
+      } else {
+        userD.result = 'true'
+      }
       console.log(userD)
-      axios.post(`http://localhost:8080/addAwakener`,
+      axios.post(`http://localhost:` + this.myPort + `/addRiftStatus`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
+            const toast = useToast();
+            if (response.data.result === 'true') {
+              toast.success("Успешно обновлено", {
+                timeout: 2000
+              });
+            } else {
+              toast.error("Слишком низкий уровень группы", {
+                timeout: 4000
+              });
+            }
           })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 
-/*.send-button{
-  margin-top: 80px;
-  width: 30vw;
-}
-
-.input-row{
-  height: 40vh;
-  margin: 30px;
+.block-dropdowns {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-input{
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
+.my-drop {
+  width: 54.5vw
 }
 
-.input-grid{
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.header-menu{
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu{
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-.text-ex{
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
-}*/
 </style>

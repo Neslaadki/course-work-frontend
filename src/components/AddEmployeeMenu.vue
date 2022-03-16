@@ -5,55 +5,142 @@
         Сокращенная регистрация сотрудника в системе
       </div>
     </div>
-    <div class="input-row">
-      <div class="input-grid">
-        <input v-model="human_id" placeholder="ID Человека">
-        <input v-model="position_id" placeholder="ID Должности">
+    <form @submit.prevent="addEmployeeEasy">
+      <div class="input-row">
+        <!--        <div class="input-grid">-->
+        <span class="p-float-label">
+                <Dropdown class="my-drop" id="human" v-model="human_id" :options="list_humans" option-value="id" optionLabel="firstName"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="human">Выберите человека</label>
+              </span>
+        <span class="p-float-label">
+                <Dropdown class="my-drop" id="positions" v-model="position_id" :options="list_positions" option-value="position_id"
+                          optionLabel="position_name"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="positions">Выберите должность</label>
+              </span>
+
+
+        <span class="p-float-label">
+        	<InputNumber min="0" id="exp" type="text" v-model="experience" mode="decimal"/>
+	        <label for="exp">Опыт (кол-во лет) </label>
+        </span>
+        <span class="p-float-label">
+        	<InputNumber min="0" max="10" id="level" type="text" v-model="access_level" mode="decimal"/>
+	        <label for="level">Уровень доступа (от 1 до 10)</label>
+        </span>
+        <!--        </div>-->
+        <!--        <div class="input-grid">-->
+        <span class="p-float-label">
+        	<InputText min="1" id="login" type="text" v-model="login" mode="decimal"/>
+	        <label for="login">Логин</label>
+        </span>
+        <span class="p-float-label">
+        	<InputText min="1" id="password" type="password" v-model="password" mode="decimal"/>
+	        <label for="password">Пароль</label>
+        </span>
+        <!--        </div>-->
       </div>
-      <div class="input-grid">
-        <input v-model="experience" placeholder="Опыт работы">
-        <input v-model="access_level" placeholder="Уровень доступа">
+      <div>
+        <Button class="send-button" type="submit">Отправить</Button>
       </div>
-    </div>
-    <div >
-      <button class="send-button">Отправить</button>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
+const options = {};
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+const app = createApp();
+app.use(Toast, options);
+
+import axios from 'axios'
+
 export default {
   name: "AddEmployeeMenu",
   data() {
     return {
+      human_id: null,
+      position_id: null,
+      login: null,
+      password: null,
+      experience: null,
+      access_level: null,
+      countries: null,
+      list_humans: null,
+      list_positions: null,
+      showError: false,
       form: {
         human_id: "",
         position_id: "",
         experience: "",
         access_level: "",
+        login: "",
+        password: "",
       },
-      showError: false
     };
   },
+  mounted() {
+    axios.get(`http://localhost:` + this.myPort + `/getPositionsMap`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+    )
+        .then(response => {
+          console.log(response.data)
+          this.list_positions = response.data
+        }).catch(err => {
+      console.log("Пошел нахуй")
+    })
+    axios.get(`http://localhost:` + this.myPort + `/getHumansInfo/` + localStorage.getItem("country_id")
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+    )
+        .then(response => {
+          console.log(response.data)
+          this.list_humans = response.data
+          this.list_humans.forEach(human => {
+            human.firstName = human.id + ': ' + human.firstName + ' ' + human.lastName
+          })
+        }).catch(err => {
+      console.log("Пошел нахуй")
+    })
+  },
   methods: {
-    addEmployee: function () {
+    addEmployeeEasy: function () {
       let config = {
         headers: {}
       }
 
       const userD = {
-        post_human_id: this.human_id,
-        post_position_id: this.position_id,
-        post_experience: this.experience,
-        post_access_level: this.access_level,
+        id_human: this.human_id,
+        positionId: this.position_id,
+        experience: this.experience,
+        accessLevel: this.access_level,
+        countryId: localStorage.getItem('country_id'),
+        login: this.login,
+        password: this.password,
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/registration_simple`,
+      axios.post(`http://localhost:` + this.myPort + `/registration`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
-
+            console.log(response.data)
+            // Get toast interface
+            const toast = useToast();
+            // Use it!
+            if (response.data.result == 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            } else {
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
           })
     }
   }
@@ -62,68 +149,8 @@ export default {
 
 </script>
 
-<style>
-
-/*.send-button{
-  margin-top: 80px;
-  width: 30vw;
+<style scoped>
+.my-drop{
+  width: 54.5vw
 }
-
-.input-row{
-  height: 40vh;
-  margin: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-input{
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
-}
-
-.input-grid{
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.header-menu{
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu{
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-.text-ex{
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
-}*/
 </style>

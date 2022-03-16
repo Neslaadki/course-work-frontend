@@ -1,6 +1,7 @@
 <template>
-<form  @submit.prevent="addAwakener">
-    <div class="main-menu">
+
+  <div class="main-menu">
+    <form @submit.prevent="addAwakener">
       <div class="text-ex">
         <div class="header-menu">
           Регистрация пробужденного в системе
@@ -24,11 +25,12 @@
           <input type="date" v-model="awaken_time" placeholder="Время пробуждения">
         </div>
       </div>
-      <div >
+      <div>
         <button type="submit" class="send-button">Отправить</button>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
+
 
 </template>
 
@@ -75,11 +77,11 @@ export default {
         countryId: this.country,
         experience: this.experience,
         rank: this.rank,
-        id_guild: this.guild
+        guildId: this.guild
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/addAwakener`,
+      axios.post(`http://localhost:` + this.myPort + `/addAwakener`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

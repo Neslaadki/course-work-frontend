@@ -1,31 +1,36 @@
 <template>
-  <form  @submit.prevent="addGroup">
-    <div class="main-menu">
-      <div class="text-ex">
-        <div class="header-menu">
-          Создание группы
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-grid">
-          <input v-model="access_level" placeholder="Уровень доступа">
-        </div>
-      </div>
-      <div >
-        <button type="submit" class="send-button">Добавить</button>
+
+  <div class="main-menu">
+    <div class="text-ex">
+      <div class="header-menu">
+        Создание группы
       </div>
     </div>
-  </form>
+    <form @submit.prevent="addGroup">
+      <div class="input-row">
+        <span class="p-float-label">
+        	<InputText id="name" type="text" v-model="name" mode="decimal"/>
+	        <label for="name">Введите название группы</label>
+        </span>
+      </div>
+      <div>
+        <Button type="submit" class="send-button">Добавить</Button>
+      </div>
+    </form>
+  </div>
+
 
 </template>
 
 <script>
 import axios from "axios";
+
 const options = {};
-import { createApp } from "vue";
-import { useToast } from "vue-toastification";
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
 const app = createApp();
 app.use(Toast, options);
 
@@ -34,9 +39,7 @@ export default {
   name: "AddGroupMenu",
   data() {
     return {
-      form: {
-        access_level: "",
-      },
+      name: null,
       showError: false
     };
   },
@@ -46,22 +49,22 @@ export default {
         headers: {}
       }
       const userD = {
-        accessLevel: this.access_level
+        name: this.name
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/createGroup`,
+      axios.post(`http://localhost:` + this.myPort + `/createGroup`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
             const toast = useToast();
             // Use it!
-            if(response.data.result == 'true') {
+            if (response.data.result == 'true') {
               toast.success("Успешно добавлено", {
                 timeout: 2000
               });
-            }else{
+            } else {
               toast.error("Ошибка добавления", {
                 timeout: 2000
               });

@@ -55,7 +55,7 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/auth`,
+      axios.post('http://localhost:' + this.myPort + '/auth',
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
@@ -82,7 +82,8 @@ export default {
               localStorage.setItem('country_id',response.data.country_id)
               localStorage.setItem('role',response.data.role)
               localStorage.setItem('role_id',response.data.role_id)
-              localStorage.setItem('access_lecel',response.data.access_level)
+              localStorage.setItem('access_level',response.data.access_level)
+              localStorage.setItem('id', response.data.id)
             } else {
               window.alert("Был введен несуществующий логин или пароль")
             }

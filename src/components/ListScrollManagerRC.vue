@@ -1,16 +1,25 @@
+
+
 <template>
   <div class="main_body">
     <div class="list-block">
-      <button v-on:click="chooseAddRecycling">Добавить Центр переработки</button>
-      <button v-on:click="chooseDeleteRecycling">Удалить Центр переработки</button>
-      <button v-on:click="chooseInfoRecycling">Вывести список центров переработки</button>
+
+      <Button v-on:click="chooseAddRecycling">Добавить Центр переработки</Button>
+      <Button v-on:click="chooseInfoRecycling">Вывести список центров переработки</Button>
+
+
+      <Button v-on:click="chooseInfoMaterial">Список материалов с монстра</Button>
+      <Button v-on:click="chooseInfoMonster">Список монстров из разлома</Button>
+      <Button v-on:click="chooseInfoArtifact">Список артефактов из разлома</Button>
     </div>
-     <component v-bind:is="menuComponent"/>
+    <component v-bind:is="menuComponent"/>
   </div>
 </template>
 
 
 <style scoped>
+
+
 .main_body{
   background-color: rgba(122, 215, 244, 0.42);
   display: flex;
@@ -30,8 +39,9 @@
 }
 
 button {
-  background-color: rgba(82, 123, 203, 0.9);;
-  color: #0e192d;
+  text-align: center;
+  background-color: rgba(56, 56, 63, 0.59);;
+  color: #ffffff;
   margin: 15px;
   height: 60px;
   border-radius: 8px;
@@ -82,9 +92,17 @@ import UpdateRiftMenu from "@/components/UpdateRiftMenu";
 import AddRecyclingMenu from "@/components/AddRecyclingMenu";
 import DeleteRecyclingMenu from "@/components/DeleteRecyclingMenu";
 import InfoRecyclingMenu from "@/components/InfoRecyclingMenu";
+import InfoEmployeeMenu from "@/components/InfoEmployeeMenu";
+import DeleteEmployeeMenu from "@/components/DeleteEmployeeMenu";
+import InfoHumanMenu from "@/components/InfoHumanMenu";
+import InfoMaterialsMenu from "@/components/InfoMaterialsMenu";
+import InfoStatusMenu from "@/components/InfoStatusMenu";
+import InfoMonsterMenu from "@/components/InfoMonsterMenu";
+import InfoArtifactMenu from "@/components/InfoArtifactMenu";
+import InfoRiftByGroupMenu from "@/components/InfoRiftByGroupMenu";
 
 export default {
-  name: "ListScrollManagerRC",
+  name: "ListScroll",
   components: {
     AddHumanAndEmployeeMenu,
     MainMenu,
@@ -106,7 +124,15 @@ export default {
     UpdateRiftMenu,
     AddRecyclingMenu,
     DeleteRecyclingMenu,
-    InfoRecyclingMenu
+    InfoRecyclingMenu,
+    InfoEmployeeMenu,
+    DeleteEmployeeMenu,
+    InfoHumanMenu,
+    InfoMaterialsMenu,
+    InfoStatusMenu,
+    InfoMonsterMenu,
+    InfoArtifactMenu,
+    InfoRiftByGroupMenu
   },
   data(){
     return{
@@ -183,6 +209,27 @@ export default {
     },
     chooseInfoRecycling(){
       this.menuComponent = InfoRecyclingMenu;
+    },
+    chooseInfoHuman(){
+      this.menuComponent = InfoHumanMenu;
+    },
+    chooseDeleteEmployee(){
+      this.menuComponent = DeleteEmployeeMenu;
+    },
+    chooseInfoMaterial(){
+      this.menuComponent = InfoMaterialsMenu;
+    },
+    chooseInfoStatus(){
+      this.menuComponent = InfoStatusMenu;
+    },
+    chooseInfoMonster(){
+      this.menuComponent = InfoMonsterMenu
+    },
+    chooseInfoArtifact(){
+      this.menuComponent = InfoArtifactMenu
+    },
+    chooseInfoRiftByGroup(){
+      this.menuComponent = InfoRiftByGroupMenu
     }
   }
 }

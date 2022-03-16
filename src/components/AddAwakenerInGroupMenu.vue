@@ -1,19 +1,30 @@
 <template>
   <div class="main-menu">
-    <form @submit.prevent="addAwakenerInGroup">
       <div class="text-ex">
         <div class="header-menu">
           Добавление пробужденного в группу
         </div>
       </div>
+    <form @submit.prevent="addAwakenerInGroup">
       <div class="input-row">
-        <div class="input-grid">
-          <input v-model="id_awakener_in_group" placeholder="Id пробужденного">
-          <input v-model="id_group_to_add" placeholder="Id группы">
+        <div class="block-dropdowns">
+          <span class="p-float-label">
+                <Dropdown  @change="updateGroups" class="my-drop" id="awakener_id" v-model="id_awakener_in_group" :options="awakeners" option-value="id"
+                          optionLabel="firstName"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="awakener_id">Выберите пробужденного</label>
+          </span>
+          <span class="p-float-label">
+                <Dropdown class="my-drop" id="group_id" v-model="id_group_to_add" :options="groups" option-value="id"
+                          optionLabel="name"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="group_id">Выберите группу</label>
+          </span>
         </div>
       </div>
+
       <div>
-        <button class="send-button" type="submit">Добавить</button>
+        <Button class="send-button" type="submit">Добавить</Button>
       </div>
     </form>
   </div>
@@ -34,14 +45,59 @@ export default {
   name: "AddAwakenerInGroupMenu",
   data() {
     return {
-      form: {
-        id_awakener_in_group: "",
-        id_group_to_add: "",
-      },
+      final_groups: [],
+      awakeners_in_group: null,
+      groups: null,
+      awakeners: null,
+      id_awakener_in_group: null,
+      id_group_to_add: null,
       showError: false
     };
   },
+  mounted() {
+    let config = {
+      headers: {}
+    }
+    axios.get(`http://localhost:` + this.myPort + `/getAwakenersInfo/` + localStorage.getItem("country_id")
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+        , config)
+        .then(response => {
+          console.log(response.data)
+          this.awakeners = response.data
+          this.awakeners.forEach(array => {
+            array.firstName = array.id + ': ' + array.firstName + ' ' + array.lastName
+          })
+        }).catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
+  },
   methods: {
+    updateGroups: function (){
+      axios.get(`http://localhost:` + this.myPort + `/getGroupsMap`
+          // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+          )
+          .then(response => {
+            console.log(response.data)
+            this.groups = response.data
+          }).catch(err => {
+        console.log(err)
+        return Promise.reject(err)
+      })
+
+
+      axios.get(`http://localhost:` + this.myPort + `/getAwakenersInGroupMap`
+          // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+      )
+          .then(response => {
+            console.log(response.data)
+            this.awakeners_in_group = response.data
+          }).catch(err => {
+        console.log(err)
+        return Promise.reject(err)
+      })
+    },
+
     addAwakenerInGroup: function () {
       let config = {
         headers: {}
@@ -54,7 +110,7 @@ export default {
       }
 
 
-      axios.post(`http://localhost:38431/addAwakenerToGroup`,
+      axios.post(`http://localhost:` + this.myPort + `/addAwakenerToGroup`,
           userD
           , config)
           .then(response => {
@@ -77,6 +133,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.block-dropdowns {
+  display: flex;
+  justify-content: space-between;
+}
 
+.my-drop {
+  width: 25vw
+}
 </style>

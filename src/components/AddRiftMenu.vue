@@ -1,137 +1,140 @@
 <template>
-  <form  @submit.prevent="addRift">
-    <div class="main-menu">
-      <div class="text-ex">
-        <div class="header-menu">
-          Регистрация пробужденного в системе
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-grid">
-          <input v-model="id_coordinate" placeholder="Id координат">
-          <input v-model="id_country" placeholder="Id страны">
-        </div>
-        <div class="input-grid">
-          <input v-model="rank" placeholder="Ранг">
-          <input v-model="access_level" placeholder="Уровень доступа">
-        </div>
-        <div class="input-grid">
-          <input v-model="reward" placeholder="Награда">
-        </div>
-      </div>
-      <div >
-        <button type="submit" class="send-button">Отправить</button>
+
+  <div class="main-menu">
+    <div class="text-ex">
+      <div class="header-menu">
+        Регистрация разлома в системе
       </div>
     </div>
-  </form>
+    <form @submit.prevent="addRift">
+      <div class="input-row">
+          <div class="p-float-label">
+        	<InputText id="x" type="text" v-model="x"/>
+	        <label for="x">Широта</label>
+          </div>
+          <div  class="p-float-label">
+        	<InputText id="y" type="text" v-model="y"/>
+	        <label for="y">Долгота</label>
+          </div>
 
+        <span class="p-float-label">
+        	<InputNumber id="reward" type="text" v-model="reward" mode="decimal"/>
+	        <label for="reward">Награда</label>
+        </span>
+          <span class="p-float-label">
+                <Dropdown class="my-drop" id="country" v-model="country" :options="countries" option-value="id"
+                          optionLabel="name"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="country">Выберите страну</label>
+              </span>
+        <span class="p-float-label">
+        	<InputNumber min="0" id="access_level" type="text" v-model="access_level" mode="decimal"/>
+	        <label for="access_level">Уровень доступа</label>
+        </span>
+        <span class="p-float-label">
+        	<InputNumber min="1" max="10" id="rank" type="text" v-model="rank" mode="decimal"/>
+	        <label for="rank">Выберите ранг (от 1 до 10)</label>
+        </span>
+      </div>
+      <div>
+        <Button class="send-button" type="submit">Отправить</Button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+const options = {};
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
 
 export default {
   name: "AddRiftMenu",
   data() {
     return {
-      form: {
-        id_coordinate: "",
-        id_country: "",
-        rank: "",
-        access_level: "",
-        reward: ""
-      },
+      countries: null,
+      x: null,
+      y: null,
+      reward: null,
+      country: null,
+      access_level: null,
+      rank: null,
       showError: false
     };
+  },
+  mounted() {
+    axios.get(`http://localhost:` + this.myPort + `/getCountryMap`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+    )
+        .then(response => {
+          console.log(response.data)
+          this.countries = response.data
+        }).catch(err => {
+      console.log("Пошел нахуй")
+    })
   },
   methods: {
     addRift: function () {
       let config = {
         headers: {}
       }
+      const coordinateD = {
+        latitude: this.x,
+        longitude: this.y
+      }
 
       const userD = {
-        coordinateId: this.id_coordinate,
-        countryId: this.id_country,
+        coordinateId: null,
+        countryId: this.country,
         rank: this.rank,
         accessLevel: this.access_level,
         reward: this.reward
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/addRift`,
-          userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
-          , config)
-          .then(response => {
-            console.log(response.data)
+      axios.post(`http://localhost:` + this.myPort + `/addCoordinate`,
+          coordinateD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+          )
+          .then(responseCoor => {
+            userD.coordinateId = responseCoor.data.id
+            console.log(userD)
+            axios.post(`http://localhost:` + this.myPort + `/addRift`,
+                userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+            )
+                .then(response => {
+                  console.log(response.data)
+                  const toast = useToast();
+                  // Use it!
+                  if (response.data.result === 'true') {
+                    toast.success("Успешно добавлено", {
+                      timeout: 2000
+                    });
+                  } else {
+                    toast.error("Ошибка добавления", {
+                      timeout: 2000
+                    });
+                  }
+
+                })
           })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 
-/*.send-button{
-  margin-top: 80px;
-  width: 30vw;
-}
-
-.input-row{
-  height: 40vh;
-  margin: 30px;
+.block-dropdowns {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-input{
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
+.my-drop {
+  width: 54.5vw
 }
-
-.input-grid{
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.header-menu{
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu{
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-.text-ex{
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
-}*/
 </style>

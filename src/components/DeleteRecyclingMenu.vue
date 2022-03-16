@@ -1,6 +1,7 @@
 <template>
-  <form @submit.prevent="deleteAwakener">
-    <div class="main-menu">
+
+  <div class="main-menu">
+    <form @submit.prevent="deleteAwakener">
       <div class="text-ex">
         <div class="header-menu">
           Удаление пробужденного из системы
@@ -11,11 +12,12 @@
           <input v-model="id_awakener" placeholder="Id пробужденного">
         </div>
       </div>
-      <div >
+      <div>
         <button type="submit" class="send-button">Удалить</button>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
+
 
 </template>
 
@@ -38,7 +40,7 @@ export default {
         headers: {}
       }
       console.log('HUI')
-      axios.delete(`http://localhost:38431/deleteAwakener/`+this.id_awakener
+      axios.delete(`http://localhost:` + this.myPort + `/deleteAwakener/` + this.id_awakener
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {

@@ -5,7 +5,63 @@
         Полная регистрация сотрудника в системе
       </div>
     </div>
+
     <form @submit.prevent="addEmployee">
+      <div class="input-row">
+        <!--        <div class="input-grid">-->
+        <span class="p-float-label">
+        	<InputText  id="name" type="text" v-model="name" mode="decimal"/>
+	        <label for="name">Имя</label>
+        </span>
+        <span class="p-float-label">
+        	<InputText  id="lastName" type="text" v-model="lastName" mode="decimal"/>
+	        <label for="lastName">Фамилия</label>
+        </span>
+        <div class="block-dropdowns" >
+          <span class="p-float-label">
+          <Calendar class="my-drop" id="birthday" v-model="birthday" dateFormat="dd-mm-yy" />
+	        <label for="birthday">Выберите дату рождения</label>
+        </span>
+          <span class="p-float-label">
+                <Dropdown class="my-drop" id="country" v-model="country" :options="countries" option-value="id" optionLabel="name"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="country">Выберите страну</label>
+              </span>
+          <span class="p-float-label">
+                <Dropdown class="my-drop" id="positions" v-model="position_id" :options="list_positions" option-value="position_id"
+                          optionLabel="position_name"
+                          :filter="true" filterPlaceholder="Фильтр"></Dropdown>
+                <label for="positions">Выберите должность</label>
+              </span>
+        </div>
+        <span class="p-float-label">
+        	<InputNumber min="0" id="exp" type="text" v-model="experience" mode="decimal"/>
+	        <label for="exp">Опыт (кол-во лет) </label>
+        </span>
+        <span class="p-float-label">
+        	<InputNumber min="1" max="10" id="level" type="text" v-model="access_level" mode="decimal"/>
+	        <label for="level">Уровень доступа (от 1 до 10)</label>
+        </span>
+        <!--        </div>-->
+        <!--        <div class="input-grid">-->
+        <span class="p-float-label">
+        	<InputText min="1" id="login" type="text" v-model="login" mode="decimal"/>
+	        <label for="login">Логин</label>
+        </span>
+        <span class="p-float-label">
+        	<InputText min="1" id="password" type="password" v-model="password" mode="decimal"/>
+	        <label for="password">Пароль</label>
+        </span>
+        <!--        </div>-->
+      </div>
+      <div>
+        <Button class="send-button" type="submit">Отправить</Button>
+      </div>
+    </form>
+
+
+
+<!--    <form @submit.prevent="addEmployee">
       <div class="input-row">
         <div class="input-grid">
           <input v-model="name" placeholder="Имя">
@@ -31,47 +87,62 @@
       <div >
         <button class="send-button" type="submit">Отправить</button>
       </div>
-    </form>
+    </form>-->
 
   </div>
 </template>
 
 <script>
-
-
-
-const options = {
-};
-
-import { createApp } from "vue";
-import { useToast } from "vue-toastification";
+const options = {};
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
 const app = createApp();
 app.use(Toast, options);
 
 import axios from 'axios'
 
-
-
 export default {
-  name: "AddHumanAndEmployeeMenu",
+  name: "AddEmployeeMenu",
   data() {
     return {
-      form: {
-        name: "",
-        surname: "",
-        birthday: "",
-        native_country: "",
-        experience: "",
-        access_level: "",
-        login: "",
-        password: "",
-        position_id: "",
-        guild_id: ""
-      },
-      showError: false
+      country: null,
+      birthday: null,
+      name: null,
+      lastName: null,
+      human_id: null,
+      position_id: null,
+      login: null,
+      password: null,
+      experience: null,
+      access_level: null,
+      countries: null,
+      list_humans: null,
+      list_positions: null,
+      showError: false,
     };
+  },
+  mounted() {
+    axios.get(`http://localhost:` + this.myPort + `/getPositionsMap`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+    )
+        .then(response => {
+          console.log(response.data)
+          this.list_positions = response.data
+        }).catch(err => {
+      console.log("Пошел нахуй")
+    })
+    axios.get(`http://localhost:` + this.myPort + `/getCountryMap`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+    )
+        .then(response => {
+          console.log(response.data)
+          this.countries = response.data
+        }).catch(err => {
+      console.log("Пошел нахуй")
+    })
   },
   methods: {
     addEmployee: function () {
@@ -80,26 +151,21 @@ export default {
       }
 
       const date = new Date(this.birthday);
-      console.log(date);
-      console.log(this.birthday);
-      console.log(this.birthday.value);
-      const timestamp = date.getTime();
-
+      let birthday_date = date.getTime();
       const userD = {
         firstName: this.name,
-        lastName: this.surname,
-        birthday: timestamp,
-        countryId: this.native_country,
+        lastName: this.lastName,
+        birthday: birthday_date,
+        countryId: this.country,
+        positionId: this.position_id,
         experience: this.experience,
         accessLevel: this.access_level,
         login: this.login,
         password: this.password,
-        positionId: this.position_id,
-        guild_id_country: this.guild_id
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/registration`,
+      axios.post(`http://localhost:` + this.myPort + `/registration`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
@@ -107,11 +173,11 @@ export default {
             // Get toast interface
             const toast = useToast();
             // Use it!
-            if(response.data.result == 'true') {
+            if (response.data.result === 'true') {
               toast.success("Успешно добавлено", {
                 timeout: 2000
               });
-            }else{
+            } else {
               toast.error("Ошибка добавления", {
                 timeout: 2000
               });
@@ -124,68 +190,12 @@ export default {
 
 </script>
 
-<style>
-
-/*.send-button{
-  margin-top: 80px;
-  width: 30vw;
-}
-
-.input-row{
-  height: 40vh;
-  margin: 30px;
+<style scoped>
+.block-dropdowns{
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
-
-input{
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
+.my-drop{
+  width: 18vw
 }
-
-.input-grid{
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.header-menu{
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu{
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-.text-ex{
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
-}*/
 </style>

@@ -22,7 +22,7 @@
           <td>{{ info.lastName }}</td>
           <td>{{ info.experience }}</td>
           <td>{{ info.countryId }}</td>
-          <td>{{ info.id_guild }}</td>
+          <td>{{ info.guildId }}</td>
           <td>{{ info.rank }}</td>
           <td>{{ info.birthday }}</td>
           <td>{{ info.awakeTime }}</td>
@@ -52,7 +52,7 @@ export default {
     let config = {
       headers: {}
     }
-    axios.get(`http://localhost:38431/getEmployee/` + localStorage.getItem("country_id")
+    axios.get(`http://localhost:`+ this.myPort +`/getEmployee/` + localStorage.getItem("country_id")
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
         , config)
         .then(response => {

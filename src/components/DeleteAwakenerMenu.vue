@@ -7,9 +7,12 @@
         </div>
       </div>
       <div class="input-row">
-        <div class="input-grid">
-          <input v-model="id_awakener" placeholder="Id пробужденного">
-        </div>
+        <span class="p-float-label">
+                <Dropdown class="my-drop" id="country" v-model="id_awakener" :options="awakeners" option-value="id"
+                          optionLabel="firstName"
+                ></Dropdown>
+                <label for="country">Выберите id пробужденного</label>
+              </span>
       </div>
       <div>
         <button type="submit" class="send-button">Удалить</button>
@@ -32,11 +35,28 @@ export default {
   name: "DeleteAwakenerMenu",
   data() {
     return {
-      form: {
-        id_awakener: "",
-      },
+      awakeners: null,
+      id_awakener: null,
       showError: false
     };
+  },
+  mounted() {
+    let config = {
+      headers: {}
+    }
+    axios.get(`http://localhost:` + this.myPort + `/getAwakenersInfo/` + localStorage.getItem("country_id")
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+        , config)
+        .then(response => {
+          console.log(response.data)
+          this.awakeners = response.data
+          this.awakeners.forEach(array => {
+            array.firstName = array.id + ': ' + array.firstName + ' ' + array.lastName
+          })
+        }).catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
   },
   methods: {
     deleteAwakener: function () {
@@ -44,7 +64,7 @@ export default {
         headers: {}
       }
       console.log('HUI')
-      axios.delete(`http://localhost:38431/deleteAwakener/`+this.id_awakener
+      axios.delete(`http://localhost:`+ this.myPort +`/deleteAwakener/`+this.id_awakener
           // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
@@ -67,69 +87,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-/*.send-button {
-  margin-top: 80px;
-  width: 30vw;
-}
-
-.input-row {
-  height: 40vh;
-  margin: 30px;
+.block-dropdowns {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-input {
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
+.my-drop {
+  width: 54.5vw
 }
-
-.input-grid {
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.header-menu {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu {
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-
-.text-ex {
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
-}*/
 </style>

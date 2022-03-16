@@ -2,13 +2,38 @@
   <div class="main-menu">
     <div class="text-ex">
       <div class="header-menu">
-        Список пробужденных
+        Список людей, известных системе
       </div>
     </div>
     <div class="input-row-scroll">
+<!--      <table>-->
+<!--        <tr>-->
+<!--          <th>Id</th>-->
+<!--          <th>Имя</th>-->
+<!--          <th>Фамилия</th>-->
+<!--          <th>Опыт</th>-->
+<!--          <th>Страна</th>-->
+<!--          <th>Гильдия</th>-->
+<!--          <th>Ранг</th>-->
+<!--          <th>День рождения</th>-->
+<!--          <th>Время пробуждения</th>-->
+<!--        </tr>-->
+<!--        <tr v-for="info in arrays">-->
+<!--          <td>{{ info.id }}</td>-->
+<!--          <td>{{ info.firstName }}</td>-->
+<!--          <td>{{ info.lastName }}</td>-->
+<!--          <td>{{ info.experience }}</td>-->
+<!--          <td>{{ info.countryId }}</td>-->
+<!--          <td>{{ info.guildId }}</td>-->
+<!--          <td>{{ info.rank }}</td>-->
+<!--          <td>{{ info.birthday }}</td>-->
+<!--          <td>{{ info.awakeTime }}</td>-->
+<!--        </tr>-->
+<!--      </table>-->
       <DataTable :value="arrays" responsiveLayout="scroll">
         <Column v-for="col of columns" :field="col.field" :header="col.header" :key="col.field"></Column>
       </DataTable>
+
     </div>
   </div>
 </template>
@@ -17,12 +42,9 @@
 import axios from "axios";
 
 export default {
-  name: "InfoAwakenerMenu",
+  name: "InfoHumanMenu",
   data() {
     return {
-      form: {
-        id_awakener: "",
-      },
       showError: false,
       arrays: "",
       columns: ""
@@ -36,29 +58,24 @@ export default {
       {field: 'id', header: 'Id'},
       {field: 'firstName', header: 'Имя'},
       {field: 'lastName', header: 'Фамилия'},
-      {field: 'experience', header: 'Опыт'},
-      {field: 'countryName', header: 'Страна'},
-      {field: 'rank', header: 'Ранг'},
-      {field: 'birthday', header: 'Дата рождения'},
-      {field: 'awakeTime', header: 'Дата пробуждения'}
+      {field: 'countryName', header: 'Страна рождения'},
+      {field: 'birthday', header: 'Дата рождения'}
     ];
 
     let config = {
       headers: {}
     }
-    axios.get(`http://localhost:` + this.myPort + `/getAwakenersInfo/` + localStorage.getItem("country_id")
+    axios.get(`http://localhost:` + this.myPort + `/getHumansInfo/` + localStorage.getItem("country_id")
         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
         , config)
         .then(response => {
           console.log(response.data)
           this.arrays = response.data
           this.arrays.forEach(array => {
-            array.awakeTime = new Date(array.awakeTime).toLocaleDateString()
             array.birthday = new Date(array.birthday).toLocaleDateString()
           })
         }).catch(err => {
       console.log(err)
-      console.log("Твоя мама шлю")
       return Promise.reject(err)
     })
   }

@@ -1,36 +1,41 @@
 <template>
-  <form  @submit.prevent="addTypeMonster">
-    <div class="main-menu">
-      <div class="text-ex">
-        <div class="header-menu">
-          Добавление нового вида монстра
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-grid">
-          <input v-model="name" placeholder="Название вида">
-        </div>
-        <textarea  v-model="description" placeholder="Введите описание"/>
-      </div>
-      <div >
-        <button type="submit" class="send-button">Отправить</button>
+
+  <div class="main-menu">
+    <div class="text-ex">
+      <div class="header-menu">
+        Добавление нового вида монстра
       </div>
     </div>
-  </form>
+    <form @submit.prevent="addTypeMonster">
+      <div class="input-row">
+        <div class="input-grid">
+          <InputText v-model="name" placeholder="Название вида"/>
+        </div>
+        <Textarea style="height: 40vh" v-model="description" placeholder="Введите описание"/>
+      </div>
+      <div>
+        <Button type="submit" class="send-button">Отправить</Button>
+      </div>
+    </form>
+  </div>
+
 
 </template>
 
 <script>
 import axios from "axios";
+const options = {};
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 export default {
   name: "AddTypeMonster",
   data() {
     return {
-      form: {
-        name: "",
-        description: "",
-      },
+      name: null,
+      description: null,
       showError: false
     };
   },
@@ -48,11 +53,22 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/addArtifactOrMonsterType`,
+      axios.post(`http://localhost:` + this.myPort + `/addArtifactOrMonsterType`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
+            const toast = useToast();
+            // Use it!
+            if (response.data.result === 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            } else {
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
           })
     }
   }

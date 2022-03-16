@@ -1,26 +1,37 @@
 <template>
-<form  @submit.prevent="addTypeArtifact">
+
     <div class="main-menu">
       <div class="text-ex">
         <div class="header-menu">
           Добавление нового вида артефакта
         </div>
       </div>
+      <form  @submit.prevent="addTypeArtifact">
       <div class="input-row">
         <div class="input-grid">
-          <input v-model="name" placeholder="Название вида">
+          <InputText v-model="name" placeholder="Название вида"/>
         </div>
-          <textarea  v-model="description" placeholder="Введите описание"/>
+          <Textarea style="height: 40vh"  v-model="description" placeholder="Введите описание"/>
       </div>
-      <div >
-        <button type="submit" class="send-button">Отправить</button>
+      <div>
+        <Button type="submit" class="send-button">Отправить</Button>
       </div>
+      </form>
     </div>
-  </form>
+
 
 </template>
 
 <script>
+const options = {};
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+const app = createApp();
+app.use(Toast, options);
+
 import axios from "axios";
 
 export default {
@@ -48,11 +59,22 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/addArtifactOrMonsterType`,
+      axios.post(`http://localhost:` + this.myPort + `/addArtifactOrMonsterType`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
+            const toast = useToast();
+            // Use it!
+            if (response.data.result === 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            } else {
+              toast.error("Ошибка добавления", {
+                timeout: 2000
+              });
+            }
           })
     }
   }

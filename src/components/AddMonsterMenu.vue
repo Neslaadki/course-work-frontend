@@ -1,43 +1,84 @@
 <template>
-  <form  @submit.prevent="addArtifact">
-    <div class="main-menu">
-      <div class="text-ex">
-        <div class="header-menu">
-          Регистрация пробужденного в системе
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-grid">
-          <input v-model="id_rift" placeholder="Разлом обнаружения">
-          <input v-model="id_type" placeholder="Вид артефакта">
-        </div>
-        <div class="input-grid">
-          <input v-model="rank" placeholder="Ранг монстра">
-        </div>
-      </div>
-      <div >
-        <button type="submit" class="send-button">Отправить</button>
+
+  <div class="main-menu">
+    <div class="text-ex">
+      <div class="header-menu">
+        Регистрация монстра в системе
       </div>
     </div>
-  </form>
+    <form @submit.prevent="addArtifact">
+      <div class="input-row">
+        <div class="block-dropdowns">
+          <Dropdown class="my-drop" v-model="id_rift" :options="rifts" option-value="id" option-label="coordinateX"
+                    placeholder="Разлом обнаружения"/>
+          <Dropdown class="my-drop" v-model="id_type" :options="types" option-value="typeId" option-label="name"
+                    placeholder="Вид монстра"/>
+        </div>
+        <span style="margin-bottom: 150px" class="p-float-label">
+        	<InputNumber v-model="rank" id="price"/>
+	        <label for="price">Ранг монстра </label>
+        </span>
+      </div>
+      <div>
+        <Button type="submit" class="send-button">Отправить</Button>
+      </div>
+    </form>
+  </div>
 
 
 </template>
 
 <script>
+const options = {};
+import { createApp } from "vue";
+import { useToast } from "vue-toastification";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+const app = createApp();
+app.use(Toast, options);
 import axios from "axios";
 
 export default {
   name: "AddMonsterMenu",
   data() {
     return {
-      form: {
-        id_rift: "",
-        id_type: "",
-        rank: ""
-      },
+      rifts: null,
+      types: null,
+      id_rift: null,
+      id_type: null,
+      rank: null,
       showError: false
     };
+  },
+  mounted() {
+    let config = {
+      headers: {}
+    }
+    axios.get(`http://localhost:` + this.myPort + `/getTypesMap/MONSTER`
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+        , config)
+        .then(response => {
+          console.log(response.data)
+          this.types = response.data
+        }).catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
+
+    axios.get(`http://localhost:` + this.myPort + `/getListRifts/` + localStorage.getItem('country_id')
+        // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
+        , config)
+        .then(response => {
+          console.log(response.data)
+          this.rifts = response.data
+          this.rifts.forEach(rift => {
+            rift.coordinateX = rift.id + ': {' +  rift.coordinateX + '; ' + rift.coordinateY + '}'
+          })
+
+        }).catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
   },
   methods: {
     addArtifact: function () {
@@ -52,79 +93,34 @@ export default {
       }
 
       console.log(userD)
-      axios.post(`http://localhost:38431/addMonster`,
+      axios.post(`http://localhost:` + this.myPort + `/addMonster`,
           userD                         // судя из примеров body это тело запроса (axios преобразует автоматом в json формат)
           , config)
           .then(response => {
             console.log(response.data)
+            const toast = useToast();
+            if(response.data.result === 'true') {
+              toast.success("Успешно добавлено", {
+                timeout: 2000
+              });
+            }else if (response.data.result === 'rank'){
+              toast.error("Ранг разлома должен быть не меньше ранга монстра", {
+                timeout: 2000
+              });
+            }
           })
     }
   }
 }
 </script>
 
-<style>
-
-/*.send-button{
-  margin-top: 80px;
-  width: 30vw;
-}
-
-.input-row{
-  height: 40vh;
-  margin: 30px;
+<style scoped>
+.block-dropdowns {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-input{
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
+.my-drop {
+  width: 25vw
 }
-
-.input-grid{
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.header-menu{
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.main-menu{
-  position: relative;
-  margin: 10px;
-  border-radius: 20px;
-  background-color: rgba(235, 235, 243, 0.94);
-  width: 60vw;
-  height: 80vh;
-}
-.text-ex{
-
-  position: relative;
-  border-radius: 15px;
-  background-color: #4c4d4d;
-  margin-left: 3vw;
-  margin-right: 3vw;
-  margin-top: 3vh;
-  font-size: 40px;
-  height: 10vh;
-}*/
 </style>

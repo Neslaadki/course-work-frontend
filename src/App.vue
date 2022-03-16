@@ -1,7 +1,11 @@
 <template>
   <router-view/>
 </template>
-
+<script>
+</script>
+<style src="primevue/resources/themes/saga-blue/theme.css"></style>
+<style src="primevue/resources/primevue.min.css"></style>
+<style src="primeicons/primeicons.css"></style>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -21,15 +25,8 @@
   width: 30vw;
 }
 
-.input-row {
-  height: 40vh;
-  margin: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-input {
+input{
+  width: 54.5vw;
   font-size: 24px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -37,22 +34,14 @@ input {
   text-align: center;
   padding: 10px;
   border-radius: 15px;
-  color: aliceblue;
-  background-color: #38393b;
-  width: 20vw;
-  height: 5vh;
+  color: rgba(13, 26, 46, 1);
+  background-color: rgba(82, 123, 203, 0.9);
 }
 
 input::placeholder{
   color: rgba(13, 26, 46, 0.88);
 }
 
-.input-grid {
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
 
 .header-menu {
   text-align: center;
@@ -105,6 +94,8 @@ button {
   font-weight: bold;
 }
 
+
+
 .list-block::-webkit-scrollbar {
   width: 13px;
   background-color: #666a6c;
@@ -116,17 +107,17 @@ button {
 }
 
 .send-button{
-  margin-top: 80px;
+  margin-top: 0px;
   width: 30vw;
 }
 
 .input-row{
-  height: 40vh;
+  height: 50vh;
   margin: 30px;
   margin-left: 60px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .input-row-scroll{
@@ -147,19 +138,6 @@ button {
   background-color: rgba(72, 144, 204, 0.96);
 }
 
-input{
-  font-size: 24px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding: 10px;
-  border-radius: 15px;
-  color: rgba(13, 26, 46, 1);
-  background-color: rgba(82, 123, 203, 0.9);
-  width: 20vw;
-  height: 5vh;
-}
 
 .input-grid{
   margin: 10px;
@@ -181,7 +159,7 @@ input{
   position: relative;
   margin: 10px;
   border-radius: 20px;
-  background-color: rgba(181, 224, 252, 0.24);
+  background-color: rgba(255, 255, 255, 0.32);
   width: 60vw;
   height: 80vh;
 }
@@ -189,7 +167,8 @@ input{
 
   position: relative;
   border-radius: 15px;
-  background-color: rgba(82, 123, 203, 0.9);
+  color: white;
+  background-color: rgb(33, 149, 242);
   margin-left: 3vw;
   margin-right: 3vw;
   margin-top: 3vh;
@@ -197,36 +176,36 @@ input{
   height: 10vh;
 }
 
-table {
-  width:  49.2vw;
-  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-  font-size: 14px;
-  border-collapse: collapse;
-  text-align: center;
-}
-th {
-  background-color: rgba(82, 123, 203, 0.9);
-  color: rgba(13, 26, 46, 1);
-  padding: 10px 20px;
+/*table {*/
+/*  width:  49.2vw;*/
+/*  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+/*  font-size: 14px;*/
+/*  border-collapse: collapse;*/
+/*  text-align: center;*/
+/*}*/
+/*th {*/
+/*  background-color: rgba(82, 123, 203, 0.9);*/
+/*  color: rgba(13, 26, 46, 1);*/
+/*  padding: 10px 20px;*/
 
-}
-th, td {
-  border-style: solid;
-  border-width: 0 1px 1px 0;
-  border-color: white;
-}
-td {
-  background-color: rgba(115, 151, 220, 0.9);
-}
-th:first-child, td:first-child {
-  text-align: center;
-}
+/*}*/
+/*th, td {*/
+/*  border-style: solid;*/
+/*  border-width: 0 1px 1px 0;*/
+/*  border-color: white;*/
+/*}*/
+/*td {*/
+/*  background-color: rgba(115, 151, 220, 0.9);*/
+/*}*/
+/*th:first-child, td:first-child {*/
+/*  text-align: center;*/
+/*}*/
 
-td:first-child{
-  background-color: rgba(74, 110, 180, 0.9);
-  color: rgba(13, 26, 46, 1);
-  padding: 10px 20px;
-}
+/*td:first-child{*/
+/*  background-color: rgba(74, 110, 180, 0.9);*/
+/*  color: rgba(13, 26, 46, 1);*/
+/*  padding: 10px 20px;*/
+/*}*/
 
 textarea{
   background-color: rgba(115, 151, 220, 0.9);
@@ -239,3 +218,4 @@ textarea::placeholder{
 }
 
 </style>
+

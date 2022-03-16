@@ -1,18 +1,26 @@
 <template>
-  <div class="main_body">
-    <div class="list-block">
-      <button v-on:click="chooseAddAwakener">Добавить пробужденного</button>
-      <button v-on:click="chooseDeleteAwakener">Удалить пробужденного</button>
-      <button v-on:click="chooseInfoAboutAwakener">Информация о пробужденном</button>
-      <button v-on:click="chooseInfoAwakener">Список пробужденных</button>
+  <div className="main_body">
+    <div className="list-block">
+      <Button v-on:click="chooseAddAwakener">Добавить пробужденного</Button>
+      <Button v-on:click="chooseInfoAboutAwakener">Информация о пробужденном</Button>
+      <Button v-on:click="chooseInfoAwakener">Список пробужденных</Button>
+
+      <Button v-on:click="chooseInfoMaterial">Список материалов с монстра</Button>
+      <Button v-on:click="chooseInfoMonster">Список монстров из разлома</Button>
+      <Button v-on:click="chooseInfoArtifact">Список артефактов из разлома</Button>
+      <Button v-on:click="chooseInfoRiftByGroup">Список разломов группы</Button>
+      <!--      <Button v-on:click="chooseInfoEmployee">Вывести список сотрудников</Button>
+            <Button v-on:click="chooseDeleteEmployee">Удалить сотрудника</Button>-->
     </div>
-     <component v-bind:is="menuComponent"/>
+    <component v-bind:is="menuComponent"/>
   </div>
 </template>
 
 
 <style scoped>
-.main_body{
+
+
+.main_body {
   background-color: rgba(122, 215, 244, 0.42);
   display: flex;
   justify-content: space-between;
@@ -31,8 +39,9 @@
 }
 
 button {
-  background-color: rgba(82, 123, 203, 0.9);;
-  color: #0e192d;
+  text-align: center;
+  background-color: rgba(56, 56, 63, 0.59);;
+  color: #ffffff;
   margin: 15px;
   height: 60px;
   border-radius: 8px;
@@ -52,10 +61,11 @@ button {
 </style>
 
 <script>
-import { createApp } from "vue";
-import { useToast } from "vue-toastification";
+import {createApp} from "vue";
+import {useToast} from "vue-toastification";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+
 const app = createApp();
 const options = {
   // You can set your default options here
@@ -83,9 +93,17 @@ import UpdateRiftMenu from "@/components/UpdateRiftMenu";
 import AddRecyclingMenu from "@/components/AddRecyclingMenu";
 import DeleteRecyclingMenu from "@/components/DeleteRecyclingMenu";
 import InfoRecyclingMenu from "@/components/InfoRecyclingMenu";
+import InfoEmployeeMenu from "@/components/InfoEmployeeMenu";
+import DeleteEmployeeMenu from "@/components/DeleteEmployeeMenu";
+import InfoHumanMenu from "@/components/InfoHumanMenu";
+import InfoMaterialsMenu from "@/components/InfoMaterialsMenu";
+import InfoStatusMenu from "@/components/InfoStatusMenu";
+import InfoMonsterMenu from "@/components/InfoMonsterMenu";
+import InfoArtifactMenu from "@/components/InfoArtifactMenu";
+import InfoRiftByGroupMenu from "@/components/InfoRiftByGroupMenu";
 
 export default {
-  name: "ListScrollManagerAwakeners",
+  name: "ListScroll",
   components: {
     AddHumanAndEmployeeMenu,
     MainMenu,
@@ -107,11 +125,19 @@ export default {
     UpdateRiftMenu,
     AddRecyclingMenu,
     DeleteRecyclingMenu,
-    InfoRecyclingMenu
+    InfoRecyclingMenu,
+    InfoEmployeeMenu,
+    DeleteEmployeeMenu,
+    InfoHumanMenu,
+    InfoMaterialsMenu,
+    InfoStatusMenu,
+    InfoMonsterMenu,
+    InfoArtifactMenu,
+    InfoRiftByGroupMenu
   },
-  data(){
-    return{
-      menuComponent:"MainMenu"
+  data() {
+    return {
+      menuComponent: "MainMenu"
     }
   },
   setup() {
@@ -119,71 +145,92 @@ export default {
     const toast = useToast();
 
 
-    return { toast }
+    return {toast}
   },
   methods: {
-    chooseAddHuman(){
+    chooseAddHuman() {
       // this.toast.info("Сосать", {
       //   timeout: 2000
       // });
       this.menuComponent = AddHumanAndEmployeeMenu;
     },
-    chooseAddEmployee(){
+    chooseAddEmployee() {
       this.menuComponent = AddEmployeeMenu;
     },
-    chooseInfoAboutAwakener(){
+    chooseInfoAboutAwakener() {
       this.menuComponent = InfoAboutAwakenerMenu;
     },
-    chooseInfoAwakener(){
+    chooseInfoAwakener() {
       this.menuComponent = InfoAwakenerMenu;
     },
-    chooseInfoRifts(){
+    chooseInfoRifts() {
       this.menuComponent = InfoRiftsMenu;
     },
-    chooseDeleteAwakenerFromGroup(){
+    chooseDeleteAwakenerFromGroup() {
       this.menuComponent = DeleteAwakenerFromGroupMenu;
     },
-    chooseDeleteAwakener(){
+    chooseDeleteAwakener() {
       this.menuComponent = DeleteAwakenerMenu;
     },
-    chooseAddAwakenerInGroup(){
+    chooseAddAwakenerInGroup() {
       this.menuComponent = AddAwakenerInGroupMenu;
     },
-    chooseAddAwakener(){
+    chooseAddAwakener() {
       this.menuComponent = AddAwakenerMenu;
     },
-    chooseAddGroup(){
+    chooseAddGroup() {
       this.menuComponent = AddGroupMenu;
     },
-    chooseAddMonster(){
+    chooseAddMonster() {
       this.menuComponent = AddMonsterMenu;
     },
-    chooseAddArtifact(){
+    chooseAddArtifact() {
       this.menuComponent = AddArtifactMenu;
     },
-    chooseAddRift(){
+    chooseAddRift() {
       this.menuComponent = AddRiftMenu;
     },
-    chooseAddTypeMonster(){
+    chooseAddTypeMonster() {
       this.menuComponent = AddTypeMonsterMenu;
     },
-    chooseAddTypeArtifact(){
+    chooseAddTypeArtifact() {
       this.menuComponent = AddTypeArtifactMenu;
     },
-    chooseUpdateRift(){
+    chooseUpdateRift() {
       this.menuComponent = UpdateRiftMenu;
     },
-    chooseCloseRift(){
+    chooseCloseRift() {
       this.menuComponent = CloseRiftMenu;
     },
-    chooseAddRecycling(){
+    chooseAddRecycling() {
       this.menuComponent = AddRecyclingMenu;
     },
-    chooseDeleteRecycling(){
+    chooseDeleteRecycling() {
       this.menuComponent = DeleteRecyclingMenu;
     },
-    chooseInfoRecycling(){
+    chooseInfoRecycling() {
       this.menuComponent = InfoRecyclingMenu;
+    },
+    chooseInfoHuman() {
+      this.menuComponent = InfoHumanMenu;
+    },
+    chooseDeleteEmployee() {
+      this.menuComponent = DeleteEmployeeMenu;
+    },
+    chooseInfoMaterial() {
+      this.menuComponent = InfoMaterialsMenu;
+    },
+    chooseInfoStatus() {
+      this.menuComponent = InfoStatusMenu;
+    },
+    chooseInfoMonster() {
+      this.menuComponent = InfoMonsterMenu
+    },
+    chooseInfoArtifact() {
+      this.menuComponent = InfoArtifactMenu
+    },
+    chooseInfoRiftByGroup() {
+      this.menuComponent = InfoRiftByGroupMenu
     }
   }
 }
