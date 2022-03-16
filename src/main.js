@@ -21,7 +21,7 @@ import "vue-toastification/dist/index.css";
 
 const app = createApp(App)
 app.use(Toast, options);
-app.config.globalProperties.myPort = '8080';
+app.config.globalProperties.myPort = '38431';
 app.use(PrimeVue);
 app.component('InputText',InputText)
 app.component('InputNumber',InputNumber)

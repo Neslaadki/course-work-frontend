@@ -26,8 +26,8 @@
 	        <label for="exp">Опыт (кол-во лет) </label>
         </span>
         <span class="p-float-label">
-        	<InputNumber min="0" max="10" id="level" type="text" v-model="access_level" mode="decimal"/>
-	        <label for="level">Уровень доступа (от 1 до 10)</label>
+        	<InputNumber min="0" max="7" id="level" type="text" v-model="access_level" mode="decimal"/>
+	        <label for="level">Уровень доступа (от 1 до 7)</label>
         </span>
         <!--        </div>-->
         <!--        <div class="input-grid">-->

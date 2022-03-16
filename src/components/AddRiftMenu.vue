@@ -28,12 +28,12 @@
                 <label for="country">Выберите страну</label>
               </span>
         <span class="p-float-label">
-        	<InputNumber min="0" id="access_level" type="text" v-model="access_level" mode="decimal"/>
-	        <label for="access_level">Уровень доступа</label>
+        	<InputNumber min="1" max="7" id="access_level" type="text" v-model="access_level" mode="decimal"/>
+	        <label for="access_level">Уровень доступа (от 1 до 7)</label>
         </span>
         <span class="p-float-label">
-        	<InputNumber min="1" max="10" id="rank" type="text" v-model="rank" mode="decimal"/>
-	        <label for="rank">Выберите ранг (от 1 до 10)</label>
+        	<InputNumber min="1" max="7" id="rank" type="text" v-model="rank" mode="decimal"/>
+	        <label for="rank">Выберите ранг (от 1 до 7)</label>
         </span>
       </div>
       <div>
